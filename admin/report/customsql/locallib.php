@@ -25,7 +25,7 @@
  */
 
 
-define('REPORT_CUSTOMSQL_MAX_RECORDS', 6000);
+define('REPORT_CUSTOMSQL_MAX_RECORDS', 7000);
 define('REPORT_CUSTOMSQL_START_OF_WEEK', 6); // Saturday.
 
 
