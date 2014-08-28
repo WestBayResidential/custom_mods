@@ -24,11 +24,25 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+//TODO: Are these next 2 lines needed?
+//defined('MOODLE_INTERNAL') || die();
+//global $CFG;
 
-global $CFG;
+require_once(__DIR__ . "/../classes/recertpol.php");
+
 
 class mod_recertpol_testcase extends basic_testcase {
+
+  public function setUp()
+  {
+
+  }
+
+
+  public function tearDown()
+  {
+
+  }
 
   public function test_create_recertpol() 
   {

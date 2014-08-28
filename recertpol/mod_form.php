@@ -16,12 +16,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The main newmodule configuration form
+ * The main recertpol configuration form
  *
  * It uses the standard core Moodle formslib. For more info about them, please
  * visit: http://docs.moodle.org/en/Development:lib/formslib.php
  *
- * @package    mod_newmodule
+ * @package    mod_recertpol
  * @copyright  2011 Your Name
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -33,7 +33,7 @@ require_once($CFG->dirroot.'/course/moodleform_mod.php');
 /**
  * Module instance settings form
  */
-class mod_newmodule_mod_form extends moodleform_mod {
+class mod_recertpol_mod_form extends moodleform_mod {
 
     /**
      * Defines forms elements
@@ -47,7 +47,7 @@ class mod_newmodule_mod_form extends moodleform_mod {
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
         // Adding the standard "name" field
-        $mform->addElement('text', 'name', get_string('newmodulename', 'newmodule'), array('size'=>'64'));
+        $mform->addElement('text', 'name', get_string('recertpolname', 'recertpol'), array('size'=>'64'));
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
@@ -55,18 +55,18 @@ class mod_newmodule_mod_form extends moodleform_mod {
         }
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
-        $mform->addHelpButton('name', 'newmodulename', 'newmodule');
+        $mform->addHelpButton('name', 'recertpolname', 'recertpol');
 
         // Adding the standard "intro" and "introformat" fields
         $this->add_intro_editor();
 
         //-------------------------------------------------------------------------------
-        // Adding the rest of newmodule settings, spreeading all them into this fieldset
+        // Adding the rest of recertpol settings, spreeading all them into this fieldset
         // or adding more fieldsets ('header' elements) if needed for better logic
-        $mform->addElement('static', 'label1', 'newmodulesetting1', 'Your newmodule fields go here. Replace me!');
+        $mform->addElement('static', 'label1', 'recertpolsetting1', 'Your recertpol fields go here. Replace me!');
 
-        $mform->addElement('header', 'newmodulefieldset', get_string('newmodulefieldset', 'newmodule'));
-        $mform->addElement('static', 'label2', 'newmodulesetting2', 'Your newmodule fields go here. Replace me!');
+        $mform->addElement('header', 'recertpolfieldset', get_string('recertpolfieldset', 'recertpol'));
+        $mform->addElement('static', 'label2', 'recertpolsetting2', 'Your recertpol fields go here. Replace me!');
 
         //-------------------------------------------------------------------------------
         // add standard elements, common to all modules

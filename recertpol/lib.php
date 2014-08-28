@@ -45,7 +45,7 @@ defined('MOODLE_INTERNAL') || die();
  * @param string $feature FEATURE_xx constant for requested feature
  * @return mixed true if the feature is supported, null if unknown
  */
-function newmodule_supports($feature) {
+function recertpol_supports($feature) {
     switch($feature) {
         case FEATURE_MOD_INTRO:         return true;
         case FEATURE_SHOW_DESCRIPTION:  return true;
@@ -63,10 +63,10 @@ function newmodule_supports($feature) {
  * of the new instance.
  *
  * @param object $newmodule An object from the form in mod_form.php
- * @param mod_newmodule_mod_form $mform
+ * @param mod_recertpol_mod_form $mform
  * @return int The id of the newly inserted newmodule record
  */
-function newmodule_add_instance(stdClass $newmodule, mod_newmodule_mod_form $mform = null) {
+function recertpol_add_instance(stdClass $newmodule, mod_recertpol_mod_form $mform = null) {
     global $DB;
 
     $newmodule->timecreated = time();
@@ -84,10 +84,10 @@ function newmodule_add_instance(stdClass $newmodule, mod_newmodule_mod_form $mfo
  * will update an existing instance with new data.
  *
  * @param object $newmodule An object from the form in mod_form.php
- * @param mod_newmodule_mod_form $mform
+ * @param mod_recertpol_mod_form $mform
  * @return boolean Success/Fail
  */
-function newmodule_update_instance(stdClass $newmodule, mod_newmodule_mod_form $mform = null) {
+function recertpol_update_instance(stdClass $newmodule, mod_recertpol_mod_form $mform = null) {
     global $DB;
 
     $newmodule->timemodified = time();
@@ -108,7 +108,7 @@ function newmodule_update_instance(stdClass $newmodule, mod_newmodule_mod_form $
  * @param int $id Id of the module instance
  * @return boolean Success/Failure
  */
-function newmodule_delete_instance($id) {
+function recertpol_delete_instance($id) {
     global $DB;
 
     if (! $newmodule = $DB->get_record('newmodule', array('id' => $id))) {
@@ -131,7 +131,7 @@ function newmodule_delete_instance($id) {
  *
  * @return stdClass|null
  */
-function newmodule_user_outline($course, $user, $mod, $newmodule) {
+function recertpol_user_outline($course, $user, $mod, $newmodule) {
 
     $return = new stdClass();
     $return->time = 0;
@@ -149,7 +149,7 @@ function newmodule_user_outline($course, $user, $mod, $newmodule) {
  * @param stdClass $newmodule the module instance record
  * @return void, is supposed to echp directly
  */
-function newmodule_user_complete($course, $user, $mod, $newmodule) {
+function recertpol_user_complete($course, $user, $mod, $newmodule) {
 }
 
 /**
@@ -159,7 +159,7 @@ function newmodule_user_complete($course, $user, $mod, $newmodule) {
  *
  * @return boolean
  */
-function newmodule_print_recent_activity($course, $viewfullnames, $timestart) {
+function recertpol_print_recent_activity($course, $viewfullnames, $timestart) {
     return false;  //  True if anything was printed, otherwise false
 }
 
@@ -168,7 +168,7 @@ function newmodule_print_recent_activity($course, $viewfullnames, $timestart) {
  *
  * This callback function is supposed to populate the passed array with
  * custom activity records. These records are then rendered into HTML via
- * {@link newmodule_print_recent_mod_activity()}.
+ * {@link recertpol_print_recent_mod_activity()}.
  *
  * @param array $activities sequentially indexed array of objects with the 'cmid' property
  * @param int $index the index in the $activities to use for the next record
@@ -179,15 +179,15 @@ function newmodule_print_recent_activity($course, $viewfullnames, $timestart) {
  * @param int $groupid check for a particular group's activity only, defaults to 0 (all groups)
  * @return void adds items into $activities and increases $index
  */
-function newmodule_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid=0, $groupid=0) {
+function recertpol_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid=0, $groupid=0) {
 }
 
 /**
- * Prints single activity item prepared by {@see newmodule_get_recent_mod_activity()}
+ * Prints single activity item prepared by {@see recertpol_get_recent_mod_activity()}
 
  * @return void
  */
-function newmodule_print_recent_mod_activity($activity, $courseid, $detail, $modnames, $viewfullnames) {
+function recertpol_print_recent_mod_activity($activity, $courseid, $detail, $modnames, $viewfullnames) {
 }
 
 /**
@@ -198,7 +198,7 @@ function newmodule_print_recent_mod_activity($activity, $courseid, $detail, $mod
  * @return boolean
  * @todo Finish documenting this function
  **/
-function newmodule_cron () {
+function recertpol_cron () {
     return true;
 }
 
@@ -208,7 +208,7 @@ function newmodule_cron () {
  * @example return array('moodle/site:accessallgroups');
  * @return array
  */
-function newmodule_get_extra_capabilities() {
+function recertpol_get_extra_capabilities() {
     return array();
 }
 
@@ -227,7 +227,7 @@ function newmodule_get_extra_capabilities() {
  * @param int $newmoduleid ID of an instance of this module
  * @return bool true if the scale is used by the given newmodule instance
  */
-function newmodule_scale_used($newmoduleid, $scaleid) {
+function recertpol_scale_used($newmoduleid, $scaleid) {
     global $DB;
 
     /** @example */
@@ -246,7 +246,7 @@ function newmodule_scale_used($newmoduleid, $scaleid) {
  * @param $scaleid int
  * @return boolean true if the scale is used by any newmodule instance
  */
-function newmodule_scale_used_anywhere($scaleid) {
+function recertpol_scale_used_anywhere($scaleid) {
     global $DB;
 
     /** @example */
@@ -266,7 +266,7 @@ function newmodule_scale_used_anywhere($scaleid) {
  * @param mixed optional array/object of grade(s); 'reset' means reset grades in gradebook
  * @return void
  */
-function newmodule_grade_item_update(stdClass $newmodule, $grades=null) {
+function recertpol_grade_item_update(stdClass $newmodule, $grades=null) {
     global $CFG;
     require_once($CFG->libdir.'/gradelib.php');
 
@@ -289,7 +289,7 @@ function newmodule_grade_item_update(stdClass $newmodule, $grades=null) {
  * @param int $userid update grade of specific user only, 0 means all participants
  * @return void
  */
-function newmodule_update_grades(stdClass $newmodule, $userid = 0) {
+function recertpol_update_grades(stdClass $newmodule, $userid = 0) {
     global $CFG, $DB;
     require_once($CFG->libdir.'/gradelib.php');
 
@@ -314,7 +314,7 @@ function newmodule_update_grades(stdClass $newmodule, $userid = 0) {
  * @param stdClass $context
  * @return array of [(string)filearea] => (string)description
  */
-function newmodule_get_file_areas($course, $cm, $context) {
+function recertpol_get_file_areas($course, $cm, $context) {
     return array();
 }
 
@@ -335,7 +335,7 @@ function newmodule_get_file_areas($course, $cm, $context) {
  * @param string $filename
  * @return file_info instance or null if not found
  */
-function newmodule_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
+function recertpol_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
     return null;
 }
 
@@ -353,7 +353,7 @@ function newmodule_get_file_info($browser, $areas, $course, $cm, $context, $file
  * @param bool $forcedownload whether or not force download
  * @param array $options additional options affecting the file serving
  */
-function newmodule_pluginfile($course, $cm, $context, $filearea, array $args, $forcedownload, array $options=array()) {
+function recertpol_pluginfile($course, $cm, $context, $filearea, array $args, $forcedownload, array $options=array()) {
     global $DB, $CFG;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
@@ -379,7 +379,7 @@ function newmodule_pluginfile($course, $cm, $context, $filearea, array $args, $f
  * @param stdClass $module
  * @param cm_info $cm
  */
-function newmodule_extend_navigation(navigation_node $navref, stdclass $course, stdclass $module, cm_info $cm) {
+function recertpol_extend_navigation(navigation_node $navref, stdclass $course, stdclass $module, cm_info $cm) {
 }
 
 /**
@@ -391,5 +391,5 @@ function newmodule_extend_navigation(navigation_node $navref, stdclass $course, 
  * @param settings_navigation $settingsnav {@link settings_navigation}
  * @param navigation_node $newmodulenode {@link navigation_node}
  */
-function newmodule_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $newmodulenode=null) {
+function recertpol_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $newmodulenode=null) {
 }

@@ -17,24 +17,24 @@
 
 
 /**
- * English strings for newmodule
+ * English strings for recertpol
  *
  * You can have a rather longer description of the file as well,
  * if you like, and it can span multiple lines.
  *
- * @package    mod_newmodule
+ * @package    mod_recertpol
  * @copyright  2011 Your Name
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['modulename'] = 'newmodule';
-$string['modulenameplural'] = 'newmodules';
-$string['modulename_help'] = 'Use the newmodule module for... | The newmodule module allows...';
-$string['newmodulefieldset'] = 'Custom example fieldset';
-$string['newmodulename'] = 'newmodule name';
-$string['newmodulename_help'] = 'This is the content of the help tooltip associated with the newmodulename field. Markdown syntax is supported.';
-$string['newmodule'] = 'newmodule';
-$string['pluginadministration'] = 'newmodule administration';
-$string['pluginname'] = 'newmodule';
+$string['modulename'] = 'recertpol';
+$string['modulenameplural'] = 'recertpols';
+$string['modulename_help'] = 'Use the recertpol module for... | The recertpol module allows...';
+$string['recertpolfieldset'] = 'Custom example fieldset';
+$string['recertpolname'] = 'recertpol name';
+$string['recertpolname_help'] = 'This is the content of the help tooltip associated with the recertpolname field. Markdown syntax is supported.';
+$string['recertpol'] = 'recertpol';
+$string['pluginadministration'] = 'recertpol administration';
+$string['pluginname'] = 'recertpol';
