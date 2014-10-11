@@ -26,51 +26,44 @@
 
 //TODO: Are these next 2 lines needed?
 //defined('MOODLE_INTERNAL') || die();
-global $CFG, $DB;
+//global $CFG;
 
-class recertpol
+//global $CFG, $DB;
+
+require_once(__DIR__ . "/../classes/recertpol.php");
+
+
+class mod_recertpol_adv_testcase extends advanced_testcase 
 {
   
-  private $id;
-  private $cur_course_id;
-  private $nxt_course_id;
-
-  public function __construct($currentCourseId, $nextCourseId)
+  public function setUp()
   {
-    $this->set_cur_course_id($currentCourseId);
-    $this->set_nxt_course_id($nextCourseId);
-    $recertpol_id = $DB->insert_record( 'recertpol', $this );
-  }
 
-  
-  public function set_cur_course_id( $course_id )
-  {
-    $this->cur_course_id = $course_id;
   }
 
 
-  public function set_nxt_course_id( $course_id )
+  public function tearDown()
   {
-    $this->nxt_course_id = $course_id;
+
   }
 
-
-  public function get_id()
+  public function test_create_recertpol_object() 
   {
-    return $this->id;
+    global $CFG, $DB;
+
+    $startingcourse_id = '2';
+    $promocourse_id = '3';
+
+    $start_recertpol = new recertpol($startingcourse_id, $promocourse_id);
+    $this->assertInstanceOf('recertpol', $start_recertpol);
+    $this->assertClassHasAttribute( 'id', 'recertpol' );
+    $this->assertEquals('1', $start_recertpol->get_id());
+    $this->assertClassHasAttribute('cur_course_id', 'recertpol');
+    $this->assertEquals('2', $start_recertpol->get_cur_course_id());
+    $this->assertClassHasAttribute('nxt_course_id', 'recertpol');
+    $this->assertEquals('3', $start_recertpol->get_nxt_course_id());
   }
 
-
-  public function get_cur_course_id()
-  {
-    return $this->cur_course_id;
-  }
-
-
-  public function get_nxt_course_id()
-  {
-    return $this->nxt_course_id;
-  }
 
 }
 
