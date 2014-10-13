@@ -26,7 +26,6 @@
 
 //TODO: Are these next 2 lines needed?
 //defined('MOODLE_INTERNAL') || die();
-global $CFG, $DB;
 
 class recertpol
 {
@@ -37,12 +36,35 @@ class recertpol
 
   public function __construct($currentCourseId, $nextCourseId)
   {
+    global $CFG, $DB;
+
     $this->set_cur_course_id($currentCourseId);
     $this->set_nxt_course_id($nextCourseId);
-    $recertpol_id = $DB->insert_record( 'recertpol', $this );
+
+    $recertpol_record = new stdClass();
+    $recertpol_record->cur_course_id = $this->get_cur_course_id();
+    $recertpol_record->nxt_course_id = $this->get_nxt_course_id();
+    $recertpol_record->timecreated = time();
+    $recertpol_record->timemodified = time();
+    $recertpol_id = $DB->insert_record( 'recertpol', $recertpol_record );
+
+    $this->set_id($recertpol_id);
+    return;
+  }
+
+
+  public function update_recertpol( $id, $upd_recertpol )
+  {
+   // TODO Have to know what's in the original policy 
   }
 
   
+  public function set_id( $rec_id )
+  {
+    $this->id = $rec_id;
+  }
+
+
   public function set_cur_course_id( $course_id )
   {
     $this->cur_course_id = $course_id;

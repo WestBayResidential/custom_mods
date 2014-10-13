@@ -24,14 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-//TODO: Are these next 2 lines needed?
-//defined('MOODLE_INTERNAL') || die();
-//global $CFG;
-
-//global $CFG, $DB;
-
-require_once(__DIR__ . "/../classes/recertpol.php");
-
+global $GLOBALS;
 
 class mod_recertpol_adv_testcase extends advanced_testcase 
 {
@@ -51,10 +44,15 @@ class mod_recertpol_adv_testcase extends advanced_testcase
   {
     global $CFG, $DB;
 
+    require_once(__DIR__ . "/../classes/recertpol.php");
+
+    $this->resetAfterTest(true);
     $startingcourse_id = '2';
     $promocourse_id = '3';
 
     $start_recertpol = new recertpol($startingcourse_id, $promocourse_id);
+    print_r($start_recertpol);
+    
     $this->assertInstanceOf('recertpol', $start_recertpol);
     $this->assertClassHasAttribute( 'id', 'recertpol' );
     $this->assertEquals('1', $start_recertpol->get_id());
@@ -64,6 +62,38 @@ class mod_recertpol_adv_testcase extends advanced_testcase
     $this->assertEquals('3', $start_recertpol->get_nxt_course_id());
   }
 
+
+  public function test_get_all_recertpols()
+  {
+    
+  }
+
+
+  public function test_update_recertpol_object()
+  {
+    global $CFG, $DB;
+
+    require_once(__DIR__ . "/../classes/recertpol.php");
+
+    $this->resetAfterTest(true);
+
+    $startingcourse_id = '2';
+    $promocourse_id = '3';
+
+    $start_recertpol = new recertpol($startingcourse_id, $promocourse_id);
+
+    $upd_promocourse_id = '9';
+    $start_recertpol->update_recertpol( $start_recertpol->get_id(), $upd_promocourse_id);
+    print_r($start_recertpol);
+    
+    $this->assertInstanceOf('recertpol', $start_recertpol);
+    $this->assertClassHasAttribute( 'id', 'recertpol' );
+//    $this->assertEquals('1', $start_recertpol->get_id());
+//    $this->assertClassHasAttribute('cur_course_id', 'recertpol');
+//    $this->assertEquals('2', $start_recertpol->get_cur_course_id());
+//    $this->assertClassHasAttribute('nxt_course_id', 'recertpol');
+//    $this->assertEquals('9', $start_recertpol->get_nxt_course_id());
+  }
 
 }
 
