@@ -63,9 +63,17 @@ class mod_recertpol_adv_testcase extends advanced_testcase
   }
 
 
-  public function test_get_all_recertpols()
+  public function test_get_current_recertpol()
   {
+    global $CFG, $DB;
+
+    require_once(__DIR__ . "/../classes/recertpol.php");
+
+    $this->resetAfterTest(true);
+    $startingcourse_id = '2';
     
+    $rpolicy = new recertpol();
+    $rpolicy->get_policy($startingcourse_id);
   }
 
 

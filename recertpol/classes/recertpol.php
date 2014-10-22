@@ -34,12 +34,30 @@ class recertpol
   private $cur_course_id;
   private $nxt_course_id;
 
-  public function __construct($currentCourseId, $nextCourseId)
+  public function __construct($currentCourseId=0, $nextCourseId=0)
   {
     global $CFG, $DB;
 
     $this->set_cur_course_id($currentCourseId);
     $this->set_nxt_course_id($nextCourseId);
+
+    // If a new recertification policy is not submitted...
+    if ( $currentCourseId == 0 && $nextCourseId == 0)
+    {
+      // ...return an empty recert policy object without saving anything
+      $this->set_id( NULL );
+      return;
+    } else
+      {
+        // ...otherwise, save the submitted recertification policy detail 
+        $this->savePolicy();
+        return;
+      }
+    }
+
+  private function savePolicy()
+  {
+    global $CFG, $DB;
 
     $recertpol_record = new stdClass();
     $recertpol_record->cur_course_id = $this->get_cur_course_id();
@@ -52,6 +70,10 @@ class recertpol
     return;
   }
 
+  public function get_policy( $currentId )
+  {
+    
+  }
 
   public function update_recertpol( $id, $upd_recertpol )
   {
