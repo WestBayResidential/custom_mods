@@ -41,7 +41,7 @@ class recertpol
     $this->set_cur_course_id($currentCourseId);
     $this->set_nxt_course_id($nextCourseId);
 
-    // If a new recertification policy is not submitted...
+    // If a new recertification policy is not specified...
     if ( $currentCourseId == 0 && $nextCourseId == 0)
     {
       // ...return an empty recert policy object without saving anything
@@ -49,7 +49,7 @@ class recertpol
       return;
     } else
       {
-        // ...otherwise, save the submitted recertification policy detail 
+        // ...otherwise, save the specified recertification policy detail 
         $this->savePolicy();
         return;
       }
@@ -70,9 +70,22 @@ class recertpol
     return;
   }
 
-  public function get_policy( $currentId )
+  private function getPolicy()
   {
     
+  }
+
+
+  public function save_policy( $currentRecertpol )
+  {
+    
+  }
+
+
+  public function get_policy( $currentId )
+  {
+    $rcpolicy = $DB->get_record( 'recertpol', array( cur_course_id => $currentId ));
+    return $rcpolicy;
   }
 
   public function update_recertpol( $id, $upd_recertpol )

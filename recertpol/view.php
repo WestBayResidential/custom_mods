@@ -26,10 +26,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-/// (Replace recertpol with the name of your module and remove this line)
+// require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
+// require_once(dirname(__FILE__).'/lib.php');
+// require_once('policies.php');
 
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once(dirname(__FILE__).'/lib.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/config.php');
+require_once('lib.php');
+require_once('policies.php');
+require_once('classes/recertpol.php');
+
+
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
 $n  = optional_param('n', 0, PARAM_INT);  // recertpol instance ID - it should be named as the first character of the module
@@ -42,21 +48,25 @@ if ($id) {
     $recertpol  = $DB->get_record('recertpol', array('id' => $n), '*', MUST_EXIST);
     $course     = $DB->get_record('course', array('id' => $recertpol->course), '*', MUST_EXIST);
     $cm         = get_coursemodule_from_instance('recertpol', $recertpol->id, $course->id, false, MUST_EXIST);
-} else {
-    error('You must specify a course_module ID or an instance ID');
-}
+} else 
+  {
+    $clist = get_courses();
+  }
 
-require_login($course, true, $cm);
-$context = context_module::instance($cm->id);
+require_login();
+$context = context_system::instance();
 
-add_to_log($course->id, 'recertpol', 'view', "view.php?id={$cm->id}", $recertpol->name, $cm->id);
-
-/// Print the page header
-
-$PAGE->set_url('/mod/recertpol/view.php', array('id' => $cm->id));
-$PAGE->set_title(format_string($recertpol->name));
-$PAGE->set_heading(format_string($course->fullname));
+// add_to_log($course->id, 'recertpol', 'view', "view.php?id={$cm->id}", $recertpol->name, $cm->id);
+// 
+// /// Print the page header
+// 
+$PAGE->set_url('/mod/recertpol/view.php');
+$PAGE->set_title(format_string('Recertification Policies'));
+$PAGE->set_heading(format_string('Promotion policy'));
 $PAGE->set_context($context);
+// 
+// // Modify the Settings Navigation menu
+// $settingnode = $PAGE->settingsnav->add('Recert policy', new moodle_url('/mod/recertpol/policies.php'), navigation_node::TYPE_CONTAINER);
 
 // other things you may want to set - remove if not needed
 //$PAGE->set_cacheable(false);
@@ -65,13 +75,30 @@ $PAGE->set_context($context);
 
 // Output starts here
 echo $OUTPUT->header();
+echo $OUTPUT->heading('Current Courses:');
+// echo '<pre>' . print_r( $clist, true ) . '</pre>';
 
-if ($recertpol->intro) { // Conditions to show the intro can change to look for own settings or whatever
-    echo $OUTPUT->box(format_module_intro('recertpol', $recertpol, $cm->id), 'generalbox mod_introbox', 'recertpolintro');
+$course_pol = new recertpol();
+
+$courseslist = '';
+$listitem = '';
+
+// Create a list of current policies
+foreach( $clist as $courseObj )
+{
+ if( ($courseObj->category != 0) && ($courseObj->visible == 1) )
+ {
+   $course_pol->get_policy( $courseObj->id );
+   $listitem = '';
+   $listitem = '<li> Title: ' . $courseObj->fullname . '</li>';
+   $listitem .= '<ul><li> Course ID number: ' . $courseObj->id . '</li>';
+   $listitem .= '<li> Category: ' . $courseObj->category . '</li>';
+   $listitem .= '<li> Next recertification course: ' . $course_pol->nxt_course_id . '</li></ul>';
+ }
+ $courseslist .= $listitem;
 }
 
-// Replace the following lines with you own code
-echo $OUTPUT->heading('Yay! It works!');
+echo '<ul>' . $courseslist . '</ul>';
 
 // Finish the page
 echo $OUTPUT->footer();
