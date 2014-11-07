@@ -34,7 +34,10 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/config.php');
 require_once('lib.php');
 require_once('policies.php');
 require_once('classes/recertpol.php');
+require_once('recert_form.php');
 
+// Instantiate the form for use on this page
+$mform = new recert_form();
 
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
@@ -58,7 +61,7 @@ $context = context_system::instance();
 
 // add_to_log($course->id, 'recertpol', 'view', "view.php?id={$cm->id}", $recertpol->name, $cm->id);
 // 
-// /// Print the page header
+// Print the page header
 // 
 $PAGE->set_url('/mod/recertpol/view.php');
 $PAGE->set_title(format_string('Recertification Policies'));
@@ -76,7 +79,7 @@ $PAGE->set_context($context);
 // Output starts here
 echo $OUTPUT->header();
 echo $OUTPUT->heading('Current Courses:');
-// echo '<pre>' . print_r( $clist, true ) . '</pre>';
+
 
 $course_pol = new recertpol();
 
@@ -88,18 +91,31 @@ foreach( $clist as $courseObj )
 {
  if( ($courseObj->category != 0) && ($courseObj->visible == 1) )
  {
+   //echo 'Course object: <pre>'.print_r($courseObj, true) . '</pre>';
    $course_pol->get_policy( $courseObj->id );
-   //echo '<pre>'. print_r($course_pol, true) . '</pre>';
+   $nxt_fullname = "Select the next course";
+   //echo 'Policy: <pre>'. print_r($course_pol, true) . '</pre>';
+   if ( $course_pol->get_id() != '0' )
+   {
+     $next_cid = $course_pol->get_nxt_course_id();
+     if ( $next_cid != 0 )
+     {
+        $next_courseObj = get_course( $next_cid );
+        $nxt_fullname = $next_courseObj->fullname;
+     }
+   }
    $listitem = '';
    $listitem = '<li> Title: ' . $courseObj->fullname . '</li>';
    $listitem .= '<ul><li> Course ID number: ' . $courseObj->id . '</li>';
    $listitem .= '<li> Category: ' . $courseObj->category . '</li>';
-   $listitem .= '<li> Next recertification course: ' . $course_pol->get_nxt_course_id() . '</li></ul>';
+   $listitem .= '<li> Next recertification course: ' . $nxt_fullname . '</li></ul>';
  }
  $courseslist .= $listitem;
 }
 
 echo '<ul>' . $courseslist . '</ul>';
+
+$mform->display();
 
 // Finish the page
 echo $OUTPUT->footer();

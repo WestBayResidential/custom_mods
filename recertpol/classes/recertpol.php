@@ -88,10 +88,17 @@ class recertpol
     
     $rcpolicy = $DB->get_record( 'recertpol',
                                   array( 'cur_course_id' => $currentId ));
-    $this->set_id( $rcpolicy->id );
-    $this->set_cur_course_id( $rcpolicy->cur_course_id);
-    $this->set_nxt_course_id( $rcpolicy->nxt_course_id);
-
+    if ( !($rcpolicy) )
+    {
+      $this->set_id( '0' );
+      $this->set_cur_course_id( '0' );
+      $this->set_nxt_course_id( '0' );
+    } else
+      {
+      $this->set_id( $rcpolicy->id );
+      $this->set_cur_course_id( $rcpolicy->cur_course_id);
+      $this->set_nxt_course_id( $rcpolicy->nxt_course_id);
+      }
     return;
   }
 

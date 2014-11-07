@@ -106,6 +106,31 @@ class mod_recertpol_adv_testcase extends advanced_testcase
 //    $this->assertEquals('9', $start_recertpol->get_nxt_course_id());
   }
 
+  public function test_empty_recertpol_object()
+  {
+    global $CFG, $DB;
+
+    require_once(__DIR__ . "/../classes/recertpol.php");
+
+    $this->resetAfterTest(true);
+
+    $startingcourse_id = '2';
+    $promocourse_id = '3';
+
+    $my_rcpol = new recertpol($startingcourse_id, $promocourse_id);
+
+    $empty_course_id = '9';
+    $my_rcpol->get_policy( $empty_course_id);
+    print_r($my_rcpol);
+    
+    $this->assertInstanceOf('recertpol', $my_rcpol);
+    $this->assertClassHasAttribute( 'id', 'recertpol' );
+    $this->assertEquals('0', $my_rcpol->get_id());
+    $this->assertClassHasAttribute('cur_course_id', 'recertpol');
+    $this->assertEquals('0', $my_rcpol->get_cur_course_id());
+    $this->assertClassHasAttribute('nxt_course_id', 'recertpol');
+    $this->assertEquals('0', $my_rcpol->get_nxt_course_id());
+  }
 }
 
 
