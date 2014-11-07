@@ -84,8 +84,15 @@ class recertpol
 
   public function get_policy( $currentId )
   {
-    $rcpolicy = $DB->get_record( 'recertpol', array( cur_course_id => $currentId ));
-    return $rcpolicy;
+    global $CFG, $DB;
+    
+    $rcpolicy = $DB->get_record( 'recertpol',
+                                  array( 'cur_course_id' => $currentId ));
+    $this->set_id( $rcpolicy->id );
+    $this->set_cur_course_id( $rcpolicy->cur_course_id);
+    $this->set_nxt_course_id( $rcpolicy->nxt_course_id);
+
+    return;
   }
 
   public function update_recertpol( $id, $upd_recertpol )

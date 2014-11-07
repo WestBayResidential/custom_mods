@@ -57,8 +57,7 @@ class mod_recertpol_adv_testcase extends advanced_testcase
     $this->assertClassHasAttribute( 'id', 'recertpol' );
     $this->assertEquals('1', $start_recertpol->get_id());
     $this->assertClassHasAttribute('cur_course_id', 'recertpol');
-    $this->assertEquals('2', $start_recertpol->get_cur_course_id());
-    $this->assertClassHasAttribute('nxt_course_id', 'recertpol');
+    $this->assertEquals('2', $start_recertpol->get_cur_course_id()); $this->assertClassHasAttribute('nxt_course_id', 'recertpol');
     $this->assertEquals('3', $start_recertpol->get_nxt_course_id());
   }
 
@@ -70,10 +69,14 @@ class mod_recertpol_adv_testcase extends advanced_testcase
     require_once(__DIR__ . "/../classes/recertpol.php");
 
     $this->resetAfterTest(true);
-    $startingcourse_id = '2';
+    $startingcourse_id = '3';
+    $promocourse_id = '7';
+    $wpolicy = new recertpol( $startingcourse_id, $promocourse_id );
     
     $rpolicy = new recertpol();
-    $rpolicy->get_policy($startingcourse_id);
+    $rpolicy->get_policy( $startingcourse_id );
+    $this->assertEquals('3', $rpolicy->get_cur_course_id() );
+    $this->assertEquals('7', $rpolicy->get_nxt_course_id() );
   }
 
 

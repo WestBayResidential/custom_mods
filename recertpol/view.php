@@ -89,11 +89,12 @@ foreach( $clist as $courseObj )
  if( ($courseObj->category != 0) && ($courseObj->visible == 1) )
  {
    $course_pol->get_policy( $courseObj->id );
+   //echo '<pre>'. print_r($course_pol, true) . '</pre>';
    $listitem = '';
    $listitem = '<li> Title: ' . $courseObj->fullname . '</li>';
    $listitem .= '<ul><li> Course ID number: ' . $courseObj->id . '</li>';
    $listitem .= '<li> Category: ' . $courseObj->category . '</li>';
-   $listitem .= '<li> Next recertification course: ' . $course_pol->nxt_course_id . '</li></ul>';
+   $listitem .= '<li> Next recertification course: ' . $course_pol->get_nxt_course_id() . '</li></ul>';
  }
  $courseslist .= $listitem;
 }
