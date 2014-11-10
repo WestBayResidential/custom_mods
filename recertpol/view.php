@@ -26,7 +26,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 // require_once(dirname(__FILE__).'/lib.php');
 // require_once('policies.php');
 
@@ -36,84 +35,104 @@ require_once('policies.php');
 require_once('classes/recertpol.php');
 require_once('recert_form.php');
 
-// Instantiate the form for use on this page
-$mform = new recert_form();
-
-
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
 $n  = optional_param('n', 0, PARAM_INT);  // recertpol instance ID - it should be named as the first character of the module
 
-if ($id) {
+if ($id) 
+{
     $cm         = get_coursemodule_from_id('recertpol', $id, 0, false, MUST_EXIST);
     $course     = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
     $recertpol  = $DB->get_record('recertpol', array('id' => $cm->instance), '*', MUST_EXIST);
-} elseif ($n) {
+} elseif ($n) 
+  {
     $recertpol  = $DB->get_record('recertpol', array('id' => $n), '*', MUST_EXIST);
     $course     = $DB->get_record('course', array('id' => $recertpol->course), '*', MUST_EXIST);
     $cm         = get_coursemodule_from_instance('recertpol', $recertpol->id, $course->id, false, MUST_EXIST);
-} else 
-  {
-    $clist = get_courses();
-  }
+  } //else 
+    //{
+    //$courseList = get_courses();
+    //}
 
 require_login();
 $context = context_system::instance();
 
-// add_to_log($course->id, 'recertpol', 'view', "view.php?id={$cm->id}", $recertpol->name, $cm->id);
 // 
-// Print the page header
+// Set up the page here
 // 
 $PAGE->set_url('/mod/recertpol/view.php');
 $PAGE->set_title(format_string('Recertification Policies'));
 $PAGE->set_heading(format_string('Promotion policy'));
 $PAGE->set_context($context);
-// 
-// // Modify the Settings Navigation menu
-// $settingnode = $PAGE->settingsnav->add('Recert policy', new moodle_url('/mod/recertpol/policies.php'), navigation_node::TYPE_CONTAINER);
 
-// other things you may want to set - remove if not needed
-//$PAGE->set_cacheable(false);
-//$PAGE->set_focuscontrol('some-html-id');
-//$PAGE->add_body_class('recertpol-'.$somevar);
+// Get a list of all available courses
+$courseList = get_courses();
+
+// Instantiate the form for use on this page
+$mform = new recertpol_edit_form();
+
+// xdebug_break();
+
+$rcPolicy = new recertpol();
+
+// Create a list of all current policies and list of active courses for selection
+$allRcPolicies = array();
+$allCourses = array( '0' => 'Select a course' );
+foreach( $courseList as $courseObj )
+{
+  // Visible courses that are not in Cat-0 are 'production' courses
+  if( ($courseObj->category != 0) && ($courseObj->visible == 1) )
+  {
+    // It's a production course, so get its policy
+    $rcPolicy = new recertpol();
+    $rcPolicy->get_policy( $courseObj->id );
+    if ( $rcPolicy->get_id() != '0' )
+    {
+      // Set up an entry in the list of policies
+      $entry = array( 'curCourseId' => $rcPolicy->get_cur_course_id(),
+                      'curCourseName' => $courseObj->fullname,
+                      'nextCourseId' => $rcPolicy->get_nxt_course_id()
+                    );
+      // Add this course to the array for dropdown list
+      $allCourses["{$courseObj->id}"] = $courseObj->fullname;
+    } else 
+      {
+        // This must be a newly added course, so create an incomplete
+        // recertification policy and include it in the list so
+        // it will set up for completion
+        $rcPolicyNew = new recertpol( $courseObj->id, '0' );
+        $entry = array( 'curCourseId' => $rcPolicy->get_cur_course_id(),
+                      'curCourseName' => $courseObj->fullname,
+                      'nextCourseId' => $rcPolicy->get_nxt_course_id()
+                      );
+      }
+  $allRcPolicies[] = $entry;
+  }
+}
+
+// Instantiate the form for use on this page
+$mform = new recertpol_edit_form( null, array( 'policylist' => $allRcPolicies,
+                                               'allcourselist' => $allCourses ));
+
+
+if ( $mform->is_cancelled())
+{
+  redirect( 'moodle' );
+} else if ( $fromform = $mform->get_data())
+  {
+    echo print_r($fromform, true);
+    for( $i=0, $i<=18, $i++ )
+    {
+      if ( $fromform->courseNextOri.$i <> $fromform->courseNextUpd.$i )
+      {
+        $recertupdate = new recertpol();
+        $recertupdate->update_recertpol( $fromform->courseCur.$i, $fromform->courseNextUpd.$i );
+      }
+    }
+  }
 
 // Output starts here
 echo $OUTPUT->header();
 echo $OUTPUT->heading('Current Courses:');
-
-
-$course_pol = new recertpol();
-
-$courseslist = '';
-$listitem = '';
-
-// Create a list of current policies
-foreach( $clist as $courseObj )
-{
- if( ($courseObj->category != 0) && ($courseObj->visible == 1) )
- {
-   //echo 'Course object: <pre>'.print_r($courseObj, true) . '</pre>';
-   $course_pol->get_policy( $courseObj->id );
-   $nxt_fullname = "Select the next course";
-   //echo 'Policy: <pre>'. print_r($course_pol, true) . '</pre>';
-   if ( $course_pol->get_id() != '0' )
-   {
-     $next_cid = $course_pol->get_nxt_course_id();
-     if ( $next_cid != 0 )
-     {
-        $next_courseObj = get_course( $next_cid );
-        $nxt_fullname = $next_courseObj->fullname;
-     }
-   }
-   $listitem = '';
-   $listitem = '<li> Title: ' . $courseObj->fullname . '</li>';
-   $listitem .= '<ul><li> Course ID number: ' . $courseObj->id . '</li>';
-   $listitem .= '<li> Category: ' . $courseObj->category . '</li>';
-   $listitem .= '<li> Next recertification course: ' . $nxt_fullname . '</li></ul>';
- }
- $courseslist .= $listitem;
-}
-
-echo '<ul>' . $courseslist . '</ul>';
 
 $mform->display();
 
