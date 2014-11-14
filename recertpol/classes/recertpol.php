@@ -75,13 +75,8 @@ class recertpol
     
   }
 
-
-  public function save_policy( $currentRecertpol )
-  {
-    
-  }
-
-
+  // Retrieve a recertification policy based on the 
+  // current course id
   public function get_policy( $currentId )
   {
     global $CFG, $DB;
@@ -102,9 +97,18 @@ class recertpol
     return;
   }
 
-  public function update_recertpol( $id, $upd_recertpol )
+  // Update a recertifications policy with the current object values
+  public function update_recertpol()
   {
-   // TODO Have to know what's in the original policy 
+    global $CFG, $DB;
+
+    $rp_update = new stdClass();
+    $rp_update->id = $this->get_id();
+    $rp_update->cur_course_id = $this->get_cur_course_id();
+    $rp_update->nxt_course_id = $this->get_nxt_course_id();
+    $rp_update->timemodified = time();
+    $recertpol_id = $DB->update_record( 'recertpol', $rp_update );
+    return;
   }
 
   

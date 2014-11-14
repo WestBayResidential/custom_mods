@@ -37,6 +37,11 @@ require_once('recert_form.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
 $n  = optional_param('n', 0, PARAM_INT);  // recertpol instance ID - it should be named as the first character of the module
+$courseCur     = optional_param_array( 'courseCur', '0', PARAM_RAW );
+$courseNextOri = optional_param_array( 'courseNextOri', '0', PARAM_RAW );
+$courseNextUpd = optional_param_array( 'courseNextUpd', '0', PARAM_RAW );
+
+
 
 if ($id) 
 {
@@ -70,19 +75,34 @@ $courseList = get_courses();
 // Instantiate the form for use on this page
 $mform = new recertpol_edit_form();
 
-// xdebug_break();
+xdebug_break();
 
 $rcPolicy = new recertpol();
 
 // Create a list of all current policies and list of active courses for selection
 $allRcPolicies = array();
 $allCourses = array( '0' => 'Select a course' );
+
+// Set up query for establishing enrolment count
+$table_a = $CFG->prefix . "role_assignments";
+$table_b = $CFG->prefix . "context";
+$table_c = $CFG->prefix . "course";
+$sql = "SELECT COUNT( a.id ) AS enrlct 
+        FROM $table_a a
+        JOIN $table_b b ON a.contextid = b.id
+        JOIN $table_c c ON b.instanceid = c.id
+        WHERE a.roleid = 5
+              AND c.id = :courseid;";
+              
 foreach( $courseList as $courseObj )
 {
   // Visible courses that are not in Cat-0 are 'production' courses
   if( ($courseObj->category != 0) && ($courseObj->visible == 1) )
   {
-    // It's a production course, so get its policy
+    // It's a production course, so count enrollees and get its policy
+    $countrec = $DB->count_records_sql( $sql, array('courseid'=> $courseObj->id) ); 
+    //$enrcount = $countrec[0];
+    echo print_r($countrec, true);
     $rcPolicy = new recertpol();
     $rcPolicy->get_policy( $courseObj->id );
     if ( $rcPolicy->get_id() != '0' )
@@ -90,6 +110,7 @@ foreach( $courseList as $courseObj )
       // Set up an entry in the list of policies
       $entry = array( 'curCourseId' => $rcPolicy->get_cur_course_id(),
                       'curCourseName' => $courseObj->fullname,
+                      'curCourseCount' => $countrec,
                       'nextCourseId' => $rcPolicy->get_nxt_course_id()
                     );
       // Add this course to the array for dropdown list
@@ -102,6 +123,7 @@ foreach( $courseList as $courseObj )
         $rcPolicyNew = new recertpol( $courseObj->id, '0' );
         $entry = array( 'curCourseId' => $rcPolicy->get_cur_course_id(),
                       'curCourseName' => $courseObj->fullname,
+                      'curCourseCount' => $countrec,
                       'nextCourseId' => $rcPolicy->get_nxt_course_id()
                       );
       }
@@ -114,25 +136,33 @@ $mform = new recertpol_edit_form( null, array( 'policylist' => $allRcPolicies,
                                                'allcourselist' => $allCourses ));
 
 
-if ( $mform->is_cancelled())
+if ( $mform->is_cancelled() )
 {
-  redirect( 'moodle' );
-} else if ( $fromform = $mform->get_data())
+
+  redirect( $CFG->wwwroot );
+  
+} else if ( $courseCur )
   {
-    echo print_r($fromform, true);
-    for( $i=0, $i<=18, $i++ )
+    //echo print_r($courseCur, true);
+    for( $i=0; $i<=count( $courseCur ); $i++ )
     {
-      if ( $fromform->courseNextOri.$i <> $fromform->courseNextUpd.$i )
+      if ( $courseNextOri[$i] <> $courseNextUpd[$i] )
       {
+        // Make a new policy object
         $recertupdate = new recertpol();
-        $recertupdate->update_recertpol( $fromform->courseCur.$i, $fromform->courseNextUpd.$i );
+        // Load it with the original policy
+        $recertupdate->get_policy( $courseCur[$i] );
+        // Update the promo course id in the object
+        $recertupdate->set_nxt_course_id( $courseNextUpd[$i] );
+        // And update the database
+        $recertupdate->update_recertpol();
       }
     }
   }
 
 // Output starts here
 echo $OUTPUT->header();
-echo $OUTPUT->heading('Current Courses:');
+echo $OUTPUT->heading('Current Recertification Policies:');
 
 $mform->display();
 

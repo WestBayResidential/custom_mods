@@ -18,17 +18,26 @@ class recertpol_edit_form extends moodleform
     $allCourseList = $this->_customdata['allcourselist'];
 
     // Define elements used in the recert_edit form
-    $mform->addElement('html', '<div class="recertlist" >');
+    $mform->addElement("html", "<div class=\"recertlist\" >");
     foreach( $allPoliciesList as $entry => $polEntry )
     {
-      $mform->addElement('html', "<div class=\"rcname\"> {$polEntry['curCourseName']} (Course ID: {$polEntry['curCourseId']}) </div>" );
-      $select = $mform->addElement( 'select', 'courseNextUpd'.$entry, 'On completion, next enrollment will be in: ', $allCourseList );
-      $select-> setSelected( $polEntry['nextCourseId'] );
-      $mform->addElement( 'hidden', 'courseCur'.$entry, $polEntry['curCourseId'] );
-      $mform->addElement( 'hidden', 'courseNextOri'.$entry, $polEntry['nextCourseId'] );
+      $mform->addElement("html", "<div class=\"rcname\"> {$polEntry['curCourseName']} (Course ID: {$polEntry['curCourseId']})" );
 
+      $mform->addElement("html", "<div> Current enrollment: {$polEntry['curCourseCount']} </div>" );
+      
+      $select = $mform->addElement( "select", "courseNextUpd[{$entry}]", "On completion, next enrollment will be in: <br/>", $allCourseList );
+      $mform->setType( "courseNextUpd[{ $entry }]", PARAM_RAW );
+      $select-> setSelected( $polEntry["nextCourseId"] );
+
+      $mform->addElement( "hidden", "courseCur[{$entry}]", $polEntry["curCourseId"] );
+      $mform->setType( "courseCur[{ $entry }]", PARAM_RAW );
+
+      $mform->addElement( "hidden", "courseNextOri[{$entry}]", $polEntry['nextCourseId'] );
+      $mform->setType( "courseNextOri[{ $entry }]", PARAM_RAW );
+
+      $mform->addElement("html", "</div>" );
     }
-    $mform->addElement('html', '</div>' );
+    $mform->addElement("html", "</div>" );
 
     $this->add_action_buttons();
 

@@ -51,13 +51,10 @@ class mod_recertpol_adv_testcase extends advanced_testcase
     $promocourse_id = '3';
 
     $start_recertpol = new recertpol($startingcourse_id, $promocourse_id);
-    print_r($start_recertpol);
     
     $this->assertInstanceOf('recertpol', $start_recertpol);
-    $this->assertClassHasAttribute( 'id', 'recertpol' );
     $this->assertEquals('1', $start_recertpol->get_id());
-    $this->assertClassHasAttribute('cur_course_id', 'recertpol');
-    $this->assertEquals('2', $start_recertpol->get_cur_course_id()); $this->assertClassHasAttribute('nxt_course_id', 'recertpol');
+    $this->assertEquals('2', $start_recertpol->get_cur_course_id()); 
     $this->assertEquals('3', $start_recertpol->get_nxt_course_id());
   }
 
@@ -90,20 +87,25 @@ class mod_recertpol_adv_testcase extends advanced_testcase
 
     $startingcourse_id = '2';
     $promocourse_id = '3';
-
-    $start_recertpol = new recertpol($startingcourse_id, $promocourse_id);
-
-    $upd_promocourse_id = '9';
-    $start_recertpol->update_recertpol( $start_recertpol->get_id(), $upd_promocourse_id);
-    print_r($start_recertpol);
     
-    $this->assertInstanceOf('recertpol', $start_recertpol);
-    $this->assertClassHasAttribute( 'id', 'recertpol' );
-//    $this->assertEquals('1', $start_recertpol->get_id());
-//    $this->assertClassHasAttribute('cur_course_id', 'recertpol');
-//    $this->assertEquals('2', $start_recertpol->get_cur_course_id());
-//    $this->assertClassHasAttribute('nxt_course_id', 'recertpol');
-//    $this->assertEquals('9', $start_recertpol->get_nxt_course_id());
+    // Create, record and confirm a new policy
+    $rcp = new recertpol( $startingcourse_id, $promocourse_id);
+    $this->assertInstanceOf('recertpol', $rcp);
+    $this->assertEquals('1', $rcp->get_id());
+    $this->assertEquals('2', $rcp->get_cur_course_id());
+    $this->assertEquals('3', $rcp->get_nxt_course_id());
+    
+    // Change the promo course id in this object
+    $rcp->set_nxt_course_id( '9' );
+    // Now record the update
+    $rcp->update_recertpol();
+    // Confirm that the record is updated
+    $new_rcp = new recertpol();
+    $new_rcp->get_policy( $rcp->get_cur_course_id() );
+    $this->assertInstanceOf('recertpol', $new_rcp);
+    $this->assertEquals('1', $new_rcp->get_id());
+    $this->assertEquals('2', $new_rcp->get_cur_course_id());
+    $this->assertEquals('9', $new_rcp->get_nxt_course_id());
   }
 
   public function test_empty_recertpol_object()
@@ -121,7 +123,6 @@ class mod_recertpol_adv_testcase extends advanced_testcase
 
     $empty_course_id = '9';
     $my_rcpol->get_policy( $empty_course_id);
-    print_r($my_rcpol);
     
     $this->assertInstanceOf('recertpol', $my_rcpol);
     $this->assertClassHasAttribute( 'id', 'recertpol' );
