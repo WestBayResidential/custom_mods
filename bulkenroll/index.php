@@ -1,56 +1,88 @@
-<?PHP
-require_once('../config.php');
-require_once($CFG->libdir.'/weblib.php');
-//admin_externalpage_setup('major');
-print_header_simple($title='Major', $heading='heading', $navigation='navigation', $focus='', $meta='', $cache=true, $button='&nbsp;', $menu='', $usexml=false, $bodytags='', $return=false);
+<?php
 
-?>
-        <form class="getparams" action="bulkenrollMgr.php" method="get">
-            Residence: <select name="residence">
-                <option value="AMANDA">Amanda</option>
-                <option value="APARTMENTS">Apartments</option>
-                <option value="BRACKEN">Bracken</option>
-                <option value="BURDICK">Burdick</option>
-                <option value="CELESTIA">Celestia</option>
-                <option value="CENTRAL">Central</option>
-                <option value="CHURCH">Church</option>
-                <option value="CLAYPOOL">Claypool</option>
-                <option value="DARLENE">Darlene</option>
-                <option value="DAWN">Dawn</option>
-                <option value="DAY PROGRAM">Day Program</option>
-                <option value="EVERGREEN">Evergreen</option>
-                <option value="FAIRWAY">Fairway</option>
-                <option value="GLEN HILLS">Glen Hills</option>
-                <option value="GRAND">Grand</option>
-                <option value="GREENWICH">Greenwich</option>
-                <option value="HAVERHILL">Haverhill</option>
-                <option value="HELEN">Helen</option>
-                <option value="IMERA">Imera</option>
-                <option value="KNOLLWOOD">Knollwood</option>
-                <option value="LANCELOTTA">Lancelotta</option>
-                <option value="LILLIAN">Lillian</option>
-                <option value="MARIE">Marie</option>
-                <option value="NATICK">Natick</option>
-                <option value="OAKLAND">Oakland</option>
-                <option value="OFFICE">Office</option>
-                <option value="REDDINGTON">Reddington</option>
-                <option value="SHERWOOD">Sherwood</option>
-                <option value="TARTAGLIA">Tartaglia</option>
-                <option value="THISTLE">Thistle</option>
-                <option value="WHITING">Whiting</option>
-            </select><br /><br />
-            Course Category: <select name="courseCategory">
-                <option value="thirty">30 day requirements</option>
-                <option value="ninety">90 day requirements</option>
-                <option value="oneeighty">180 day requirements</option>
-                <option value="annual">Annual requirements</option>
-                <option value="biannual">Bi-Annual requirements</option>
-            </select><br /><br />
-            <input type="submit" />
-        </form>
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-<?PHP
+/**
+ * This is a one-line short description of the file
+ *
+ * You can have a rather longer description of the file as well,
+ * if you like, and it can span multiple lines.
+ *
+ * @package    mod_newmodule
+ * @copyright  2011 Your Name
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-print_footer($course=NULL, $usercourse=NULL, $return=false);
+/// Replace newmodule with the name of your module and remove this line
 
-?>
+require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
+require_once(dirname(__FILE__).'/lib.php');
+
+$id = required_param('id', PARAM_INT);   // course
+
+$course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
+
+require_course_login($course);
+
+add_to_log($course->id, 'newmodule', 'view all', 'index.php?id='.$course->id, '');
+
+$coursecontext = context_course::instance($course->id);
+
+$PAGE->set_url('/mod/newmodule/index.php', array('id' => $id));
+$PAGE->set_title(format_string($course->fullname));
+$PAGE->set_heading(format_string($course->fullname));
+$PAGE->set_context($coursecontext);
+
+echo $OUTPUT->header();
+
+if (! $newmodules = get_all_instances_in_course('newmodule', $course)) {
+    notice(get_string('nonewmodules', 'newmodule'), new moodle_url('/course/view.php', array('id' => $course->id)));
+}
+
+$table = new html_table();
+if ($course->format == 'weeks') {
+    $table->head  = array(get_string('week'), get_string('name'));
+    $table->align = array('center', 'left');
+} else if ($course->format == 'topics') {
+    $table->head  = array(get_string('topic'), get_string('name'));
+    $table->align = array('center', 'left', 'left', 'left');
+} else {
+    $table->head  = array(get_string('name'));
+    $table->align = array('left', 'left', 'left');
+}
+
+foreach ($newmodules as $newmodule) {
+    if (!$newmodule->visible) {
+        $link = html_writer::link(
+            new moodle_url('/mod/newmodule.php', array('id' => $newmodule->coursemodule)),
+            format_string($newmodule->name, true),
+            array('class' => 'dimmed'));
+    } else {
+        $link = html_writer::link(
+            new moodle_url('/mod/newmodule.php', array('id' => $newmodule->coursemodule)),
+            format_string($newmodule->name, true));
+    }
+
+    if ($course->format == 'weeks' or $course->format == 'topics') {
+        $table->data[] = array($newmodule->section, $link);
+    } else {
+        $table->data[] = array($link);
+    }
+}
+
+echo $OUTPUT->heading(get_string('modulenameplural', 'newmodule'), 2);
+echo html_writer::table($table);
+echo $OUTPUT->footer();
