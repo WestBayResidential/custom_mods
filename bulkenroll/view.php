@@ -24,33 +24,28 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+global $CFG, $DATA
+
 require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/mod/bulkenroll/lib.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/mod/bulkenroll/bulkenroll_edit_form.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/mod/bulkenroll/bulkenroll_select_form.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
-$n  = optional_param('n', 0, PARAM_INT);  // bulkenroll instance ID - it should be named as the first character of the module
+$res = optional_param('res', 0, PARAM_TEXT); // name of residence
+$cat = optional_param('cat', 0, PARAM_INT);  // course category id
 
-//if ($id) {
-//    $cm         = get_coursemodule_from_id('bulkenroll', $id, 0, false, MUST_EXIST);
-//    $course     = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-//    $bulkenroll  = $DB->get_record('bulkenroll', array('id' => $cm->instance), '*', MUST_EXIST);
-//} elseif ($n) {
-//    $bulkenroll  = $DB->get_record('bulkenroll', array('id' => $n), '*', MUST_EXIST);
-//    $course     = $DB->get_record('course', array('id' => $bulkenroll->course), '*', MUST_EXIST);
-//    $cm         = get_coursemodule_from_instance('bulkenroll', $bulkenroll->id, $course->id, false, MUST_EXIST);
-//} else {
-//    error('You must specify a course_module ID or an instance ID');
-//}
-
-require_login($course, true, $cm);
-//$context = context_module::instance($cm->id);
+// Print the page header and confirm that user is logged in
+$PAGE->set_url('/mod/bulkenroll/view.php', array('id' => "Whiting" ));
+require_login();
 
 //add_to_log($course->id, 'bulkenroll', 'view', "view.php?id={$cm->id}", $bulkenroll->name, $cm->id);
+if( $id )
+{
 
 // Set up the residences list for selection
-$all_residences = array( "AMANDA"=>"Amanda",
+$all_residences = array( "ressel" => "Select a residence",
+                         "AMANDA"=>"Amanda",
                          "APARTMENTS"=>"Apartments",
                          "BRACKEN"=>"Bracken",
                          "BURDICK"=>"Burdick",
@@ -82,30 +77,55 @@ $all_residences = array( "AMANDA"=>"Amanda",
                          "THISTLE"=>"Thistle",
                          "WHITING"=>"Whiting");
 
+$all_categories = array( "catsel" => "Select a category",
+                         "sixty" => "Within 60 days",
+                         "ninety" => "Within 90 days",
+                         "onetwenty" => "Within 120 days",
+                         "annual" => "Annual",
+                         "biannual" => "Biannual"
+                       );
+
+// Instantiate the parameter selection form for use on this page
+$mform = new bulkenroll_select_form( null, array( 'residencelist'=>$all_residences,
+  'categorylist'=>$all_categories ));
+} elseif ( !($res) && !($cat) )
+  {
+  
+  // Get employee roster and count of selected residence
+  $sql = "SELECT a.id, a.lastname, a.firstname, b.fieldid, b.data
+          FROM mdl_user a
+          JOIN mdl_user_info_data b ON a.id = b.userid 
+          WHERE a.deleted=0
+          AND b.fieldid=7
+          AND b.data LIKE '%" . $res . "%'
+          ORDER BY a.lastname";
+  $emplRoster = $DB->get_records_sql( $sql );
+  $emplCount = count( $emplRoster );
 
 
-/// Print the page header
-$PAGE->set_url('/mod/bulkenroll/view.php', array('id' => "Whiting" ));
-//$PAGE->set_title(format_string($bulkenroll->name));
-//$PAGE->set_heading(format_string($course->fullname));
-//$PAGE->set_context($context);
+  // Get list of courses in selected category
+  $sql = "SELECT shortname, idnumber 
+          FROM mdl_course 
+          WHERE category=" . $cat . 
+          " ORDER BY idnumber");
 
-// Instantiate the form for use on this page
-$mform = new bulkenroll_select_form( null, array( 'residencelist'=>$all_residences ));
+  $table = "course";
+  $select = $cat;
+  $params = NULL;
+  $fields = 'shortname, idnumber';
+  $sort = 'idnumber';
+
+  $courses = $DB->get_records_select_menu( $table, $select, $params, $fields, $sort )
+  $coursesCount = count( $courses );
 
 
-
-// other things you may want to set - remove if not needed
-//$PAGE->set_cacheable(false);
-//$PAGE->set_focuscontrol('some-html-id');
-//$PAGE->add_body_class('bulkenroll-'.$somevar);
+  } else
+    {    
+       // Make a selection for both residence and course category
+    }
 
 // Output starts here
 echo $OUTPUT->header();
-
-// if ($bulkenroll->intro) { // Conditions to show the intro can change to look for own settings or whatever
-//     echo $OUTPUT->box(format_module_intro('bulkenroll', $bulkenroll, $cm->id), 'generalbox mod_introbox', 'bulkenrollintro');
-// }
 
 // Replace the following lines with you own code
 echo $OUTPUT->heading('This is bulkenroll talking...');

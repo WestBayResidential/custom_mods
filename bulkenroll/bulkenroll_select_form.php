@@ -15,9 +15,11 @@ class bulkenroll_select_form extends moodleform
     //--------------------------------------------------------------
 
     $resList = $this->_customdata['residencelist'];
+    $catList = $this->_customdata['categorylist'];
 
     $mform->addElement("html", "<div>" );
-    $select = $mform->addElement( "select" , "residence", "Select residence ", $resList );
+    $select = $mform->addElement( "select" , "res", "Select residence ", $resList );
+    $select = $mform->addElement( "select" , "cat", "Select course category ", $catList );
 
     $this->add_action_buttons();
 
