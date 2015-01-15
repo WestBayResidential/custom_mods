@@ -12,9 +12,12 @@ class bulkenroll_edit_form extends moodleform
 
     $mform =& $this->_form;
 
+    $tablestruct = $this->_customdata['coursetable'];
+
     //--------------------------------------------------------------
 
     $mform->addElement("html", "<div>This is the bulkenroll form base</div>" );
+    $mform->addElement( "html", $tablestruct );
 
     $this->add_action_buttons();
 

@@ -24,16 +24,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-global $CFG, $DATA
+global $CFG, $DATA;
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/mod/bulkenroll/lib.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/mod/bulkenroll/bulkenroll_edit_form.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/mod/bulkenroll/bulkenroll_select_form.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/mod/bulkenroll/checktable.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
-$res = optional_param('res', 0, PARAM_TEXT); // name of residence
-$cat = optional_param('cat', 0, PARAM_INT);  // course category id
+$res = optional_param('res', 'ressel', PARAM_TEXT); // name of residence
+$cat = optional_param('cat', 'catsel', PARAM_TEXT);  // course category id
 
 // Print the page header and confirm that user is logged in
 $PAGE->set_url('/mod/bulkenroll/view.php', array('id' => "Whiting" ));
@@ -78,17 +79,19 @@ $all_residences = array( "ressel" => "Select a residence",
                          "WHITING"=>"Whiting");
 
 $all_categories = array( "catsel" => "Select a category",
-                         "sixty" => "Within 60 days",
-                         "ninety" => "Within 90 days",
-                         "onetwenty" => "Within 120 days",
-                         "annual" => "Annual",
-                         "biannual" => "Biannual"
+                         1 => "Miscellaneous",
+                         2 => "Introductory",
+                         3 => "Day One",
+                         4 => "Within 2 months",
+                         5 => "Within 4 months",
+                         7 => "Annual",
+                         8 => "Biannual"
                        );
 
 // Instantiate the parameter selection form for use on this page
 $mform = new bulkenroll_select_form( null, array( 'residencelist'=>$all_residences,
   'categorylist'=>$all_categories ));
-} elseif ( !($res) && !($cat) )
+} elseif ( ($res != 'ressel' ) && ($cat != 'catsel' ) )
   {
   
   // Get employee roster and count of selected residence
@@ -102,23 +105,20 @@ $mform = new bulkenroll_select_form( null, array( 'residencelist'=>$all_residenc
   $emplRoster = $DB->get_records_sql( $sql );
   $emplCount = count( $emplRoster );
 
-
-  // Get list of courses in selected category
-  $sql = "SELECT shortname, idnumber 
-          FROM mdl_course 
-          WHERE category=" . $cat . 
-          " ORDER BY idnumber");
-
+  // Get list of courses and count in the selected category
   $table = "course";
-  $select = $cat;
+  $select = "category = \"{$cat}\"";
   $params = NULL;
   $fields = 'shortname, idnumber';
-  $sort = 'idnumber';
+  $sort = '';
 
-  $courses = $DB->get_records_select_menu( $table, $select, $params, $fields, $sort )
+  $courses = $DB->get_records_select_menu( $table, $select, $params, $sort, $fields );
   $coursesCount = count( $courses );
 
+  $tablestuff = build_checktable( $courses, $coursesCount, $cat, $emplRoster, $emplCount, $res);
 
+  $mform = new bulkenroll_edit_form( NULL, array( 'coursetable'=>$tablestuff ));
+  
   } else
     {    
        // Make a selection for both residence and course category
@@ -126,9 +126,6 @@ $mform = new bulkenroll_select_form( null, array( 'residencelist'=>$all_residenc
 
 // Output starts here
 echo $OUTPUT->header();
-
-// Replace the following lines with you own code
-echo $OUTPUT->heading('This is bulkenroll talking...');
 
 $mform->display();
 
