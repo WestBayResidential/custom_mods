@@ -10,23 +10,39 @@
 // @param string $residence  Name of the selected residence
 //
 
-function build_checktable($courselist, $coursecount, $category, $namelist, $namecount, $residence)
+function build_checktable($courselist, $namelist, $residence)
 {
-  $checktable_top = '<table class="draggable"><thead><tr>';
+  $checktable = '<table class="draggable"><thead><tr>';
   // Print header row with residence name and course designations
-  $checktable_top .= '<th>' . $residence . '</th><th>Select all courses</th>';
+  $checktable .= '<th>' . $residence . '</th>';
 
   // Make a column heading for each course and include a 'select all' checkbox
   $ordinal = 0;
-  foreach( $courselist as $crs)
+
+  foreach( $courselist as $cname=>$cnum )
   {
     $ordinal++;
-    $cname[$ordinal] = $crs->shortname;
-    $cnum[$ordinal] = $crs->idnumber;
-    $checktable_top .= '<th>' . $cname . '/' . $cnum . '<input type="checkbox" id="col_' . $ordinal . '"></th>';
+    $cnum = $cnum ? $cnum : "NA";
+    $checktable .= '<th>' . $cname . '<br />' . $cnum . '<br /><input type="checkbox" id="col_' . $ordinal . '" name="coursesel" value="' . $cnum . '"></th>';
   }
-  $checktable_top .= '</tr></thead><tbody></tbody>';
+  $checktable .= '</tr></thead><tbody><tr><td>';
 
-  return $checktable_top;
+  // Add a row of checkboxes for each employee in the list
+  foreach( $namelist as $empuser )
+  {
+    $checktable .= '<tr><td> ' . $empuser->lastname . ', ' . $empuser->firstname . '</td>';
+    $col_count = count( $courselist );
+    while( $col_count > 0 )
+    {
+      $checktable .= '<td><input type="checkbox"></td>';
+      --$col_count;
+    }
+    $checktable .= '</tr>';
+  }
+  $checktable .= '</tbody></table>';
+
+  xdebug_break();
+
+  return $checktable;
 
 }

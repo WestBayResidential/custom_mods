@@ -36,9 +36,16 @@ $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
 $res = optional_param('res', 'ressel', PARAM_TEXT); // name of residence
 $cat = optional_param('cat', 'catsel', PARAM_TEXT);  // course category id
 
-// Print the page header and confirm that user is logged in
-$PAGE->set_url('/mod/bulkenroll/view.php', array('id' => "Whiting" ));
+// Confirm that user is logged in and set the page context
 require_login();
+$context = context_system::instance();
+// 
+// Set up the page here
+// 
+$PAGE->set_url('/mod/bulkenroll/view.php');
+$PAGE->set_title(format_string('Bulk Enrollments'));
+$PAGE->set_heading(format_string('Set up employee enrollments'));
+$PAGE->set_context($context);
 
 //add_to_log($course->id, 'bulkenroll', 'view', "view.php?id={$cm->id}", $bulkenroll->name, $cm->id);
 if( $id )
@@ -115,7 +122,7 @@ $mform = new bulkenroll_select_form( null, array( 'residencelist'=>$all_residenc
   $courses = $DB->get_records_select_menu( $table, $select, $params, $sort, $fields );
   $coursesCount = count( $courses );
 
-  $tablestuff = build_checktable( $courses, $coursesCount, $cat, $emplRoster, $emplCount, $res);
+  $tablestuff = build_checktable( $courses, $emplRoster, $res);
 
   $mform = new bulkenroll_edit_form( NULL, array( 'coursetable'=>$tablestuff ));
   
