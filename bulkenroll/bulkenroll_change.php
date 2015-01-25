@@ -30,7 +30,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/group/lib.php");
 global $CFG, $DATA, $PAGE, $OUTPUT;
 
 //$id         = required_param('id', PARAM_INT); // course id
-$select     = required_param('select', PARAM_BOOL); // array of emps by course for enrollment
+$select     = required_param_array('select', PARAM_BOOL); // array of emps by course for enrollment
 $userids    = required_param_array('bulkuser', PARAM_INT);
 $action     = optional_param('action', '', PARAM_ALPHANUMEXT);
 $filter     = optional_param('ifilter', 0, PARAM_INT);
@@ -40,8 +40,9 @@ $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
 $context = context_system::instance();
 $bulkuserop = 'editselectedusers';
 
-
+// Extract the list of users for bulk enrollment action
 $userids    = required_param_array('bulkuser', PARAM_INT);
+
 
 //if ($course->id == SITEID) {
 //    redirect(new moodle_url('/'));

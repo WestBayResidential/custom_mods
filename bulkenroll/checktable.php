@@ -29,14 +29,14 @@ function build_checktable($courselist, $namelist, $residence)
     $checktable .= '<th>' . $cname . '<br />' . $cnum . '<br /><input type="checkbox" id="col_' . $corder . '" name="coursesel" value="' . $cnum . '"></th>';
   }
   $checktable .= '</tr></thead><tbody><tr><td>';
-
+  
   // Add a row of identifiable checkboxes for each employee in the list
   foreach( $namelist as $empuser )
   {
     $checktable .= '<tr><td> ' . $empuser->lastname . ', ' . $empuser->firstname . '</td>';
     foreach( $cnumlist as $coursenumb )
     {
-      $checktable .= '<td><input type="checkbox" name="select[' . $coursenumb . '][' . $empuser->id . '] value="1"></td>';
+      $checktable .= '<td><input type="checkbox" name="select[]" value="(' . $coursenumb . ',' . $empuser->id . ')" /></td>';
     }
     unset( $coursenumb ); // Clear the variable for reuse
     $checktable .= '</tr>';
