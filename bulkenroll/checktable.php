@@ -16,27 +16,29 @@ function build_checktable($courselist, $namelist, $residence)
   // Print header row with residence name and course designations
   $checktable .= '<th>' . $residence . '</th>';
 
-  // Make a column heading for each course and include a 'select all' checkbox
-  $ordinal = 0;
+  // Make a column heading for each course and include a 'select all' checkbox,
+  // and set up an array of the course numbers for use later to create the input checkbox value
+  $corder = 0;
+  $cnumlist = array();
 
   foreach( $courselist as $cname=>$cnum )
   {
-    $ordinal++;
+    $corder++;
     $cnum = $cnum ? $cnum : "NA";
-    $checktable .= '<th>' . $cname . '<br />' . $cnum . '<br /><input type="checkbox" id="col_' . $ordinal . '" name="coursesel" value="' . $cnum . '"></th>';
+    $cnumlist[ $corder ] = $cnum;
+    $checktable .= '<th>' . $cname . '<br />' . $cnum . '<br /><input type="checkbox" id="col_' . $corder . '" name="coursesel" value="' . $cnum . '"></th>';
   }
   $checktable .= '</tr></thead><tbody><tr><td>';
 
-  // Add a row of checkboxes for each employee in the list
+  // Add a row of identifiable checkboxes for each employee in the list
   foreach( $namelist as $empuser )
   {
     $checktable .= '<tr><td> ' . $empuser->lastname . ', ' . $empuser->firstname . '</td>';
-    $col_count = count( $courselist );
-    while( $col_count > 0 )
+    foreach( $cnumlist as $coursenumb )
     {
-      $checktable .= '<td><input type="checkbox"></td>';
-      --$col_count;
+      $checktable .= '<td><input type="checkbox" name="select[' . $coursenumb . '][' . $empuser->id . '] value="1"></td>';
     }
+    unset( $coursenumb ); // Clear the variable for reuse
     $checktable .= '</tr>';
   }
   $checktable .= '</tbody></table>';

@@ -116,7 +116,7 @@ $mform = new bulkenroll_select_form( null, array( 'residencelist'=>$all_residenc
   $table = "course";
   $select = "category = \"{$cat}\"";
   $params = NULL;
-  $fields = 'shortname, idnumber';
+  $fields = 'shortname, id';
   $sort = '';
 
   $courses = $DB->get_records_select_menu( $table, $select, $params, $sort, $fields );
