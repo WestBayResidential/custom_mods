@@ -29,24 +29,48 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/group/lib.php");
 
 global $CFG, $DATA, $PAGE, $OUTPUT;
 
-//$id         = required_param('id', PARAM_INT); // course id
-$select     = required_param_array('select', PARAM_BOOL); // array of emps by course for enrollment
-$userids    = required_param_array('bulkuser', PARAM_INT);
-$action     = optional_param('action', '', PARAM_ALPHANUMEXT);
-$filter     = optional_param('ifilter', 0, PARAM_INT);
+//--$id         = required_param('id', PARAM_INT); // course id
+$select     = required_param_array('select', PARAM_INT); // array of course/emps for enrollment
+//--$userids    = required_param_array('bulkuser', PARAM_INT);
+//$action     = optional_param('action', '', PARAM_ALPHANUMEXT);
+//$filter     = optional_param('ifilter', 0, PARAM_INT);
 
-$course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
-//$context = context_course::instance($course->id, MUST_EXIST);
+//$course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
+//--$context = context_course::instance($course->id, MUST_EXIST);
 $context = context_system::instance();
 $bulkuserop = 'editselectedusers';
 
-// Extract the list of users for bulk enrollment action
-$userids    = required_param_array('bulkuser', PARAM_INT);
+// Extract lists of targeted courses and employees/users for bulk enrollment actionA
+// Isolate and sort the select array's keys
+$courses_target = array_keys( $select );
+$courses_srtd = natsort( $courses_target );
+// Init lists of course ids and user ids
+$cids_list = array();
+$uids_list = array();
+foreach($courses_target as $cid_targ)
+{
+  // The first half of the retrieved key is the course_id
+  $cid = explode( "-", $cid_targ );
+  // and use course ids as a key if its not already there
+  if( array_key_exists( $cid[0], $cids_list ))
+  {
+    // Pick up the user id and add it to the list
+    $uids_list[] = $select[ $cid_targ ];
+    // and attach list of users to the course id key
+    $cids_list[ $cid[0] ] = $uids_list;
+  } else 
+    {
+      // If the course id not already there start a new list of user ids
+      $uids_list = array();
+      $uids_list[] = $select[ $cid_targ ];
+      // and attach that list of users to the course id key
+      $cids_list[ $cid[0] ] = $uids_list;
+    }
+}
 
-
-//if ($course->id == SITEID) {
-//    redirect(new moodle_url('/'));
-//}
+//--if ($course->id == SITEID) {
+//--    redirect(new moodle_url('/'));
+//--}
 
 //require_login($course);
 require_login();

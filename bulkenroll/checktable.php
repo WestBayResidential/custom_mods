@@ -30,15 +30,16 @@ function build_checktable($courselist, $namelist, $residence)
   }
   $checktable .= '</tr></thead><tbody><tr><td>';
   
-  // Add a row of identifiable checkboxes for each employee in the list
+  // Add a row of uniquely identifiable checkboxes for each employee for each course in the list
+  $sorder = 0;
   foreach( $namelist as $empuser )
   {
     $checktable .= '<tr><td> ' . $empuser->lastname . ', ' . $empuser->firstname . '</td>';
     foreach( $cnumlist as $coursenumb )
     {
-      $checktable .= '<td><input type="checkbox" name="select[]" value="(' . $coursenumb . ',' . $empuser->id . ')" /></td>';
+      $checktable .= '<td><input type="checkbox" name="select[' . $coursenumb . '-' . $sorder . ']" value="' . $empuser->id . '" /></td>';
+      ++$sorder;
     }
-    unset( $coursenumb ); // Clear the variable for reuse
     $checktable .= '</tr>';
   }
   $checktable .= '</tbody></table>';
