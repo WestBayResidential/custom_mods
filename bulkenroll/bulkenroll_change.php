@@ -70,21 +70,21 @@ foreach( $cids_list as $enr_course=>$enr_users )
   require_login();
   require_capability('moodle/course:enrolreview', $context);
   $PAGE->set_pagelayout('admin');
-  
+//  
   $manager = new course_enrolment_manager($PAGE, $course, 'manual');
   $table = new course_enrolment_users_table($manager, $PAGE);
-  $returnurl = new moodle_url('/bulkenroll/view.php', $table->get_combined_url_params());
-  $actionurl = new moodle_url('/bulkenroll/bulkenroll_change.php', $table->get_combined_url_params()+array('bulkuserop' => $bulkuserop));
-  
-  $PAGE->set_url($actionurl);
-  $PAGE->set_context($context);
-  navigation_node::override_active_url(new moodle_url('/bulkenroll/view.php', array('id' => $enr_course)));
-  
+//  $returnurl = new moodle_url('/bulkenroll/view.php', $table->get_combined_url_params());
+//  $actionurl = new moodle_url('/bulkenroll/bulkenroll_change.php', $table->get_combined_url_params()+array('bulkuserop' => $bulkuserop));
+//  
+//  $PAGE->set_url($actionurl);
+//  $PAGE->set_context($context);
+//  navigation_node::override_active_url(new moodle_url('/bulkenroll/view.php', array('id' => $enr_course)));
+//  
   $ops = $table->get_bulk_user_enrolment_operations();
   //if (!array_key_exists($bulkuserop, $ops)) {
   //    throw new moodle_exception('invalidbulkenrolop');
   //}
-  //$operation = $ops[$bulkuserop];
+  $operation = $ops[$bulkuserop];
   
   // Prepare the properties of the form
   $users = $manager->get_users_enrolments($enr_users);
