@@ -29,14 +29,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/group/lib.php");
 
 global $CFG, $DATA, $PAGE, $OUTPUT;
 
-//--$id         = required_param('id', PARAM_INT); // course id
 $select     = required_param_array('select', PARAM_INT); // array of course/emps for enrollment
-//--$userids    = required_param_array('bulkuser', PARAM_INT);
-//$action     = optional_param('action', '', PARAM_ALPHANUMEXT);
-//$filter     = optional_param('ifilter', 0, PARAM_INT);
-
-//$course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
-//--$context = context_course::instance($course->id, MUST_EXIST);
 $context = context_system::instance();
 $bulkuserop = 'editselectedusers';
 
@@ -68,53 +61,55 @@ foreach($courses_target as $cid_targ)
     }
 }
 
-//--if ($course->id == SITEID) {
-//--    redirect(new moodle_url('/'));
-//--}
-
-//require_login($course);
-require_login();
-require_capability('moodle/course:enrolreview', $context);
-$PAGE->set_pagelayout('admin');
-
-$manager = new course_enrolment_manager($PAGE, $course, $filter);
-$table = new course_enrolment_users_table($manager, $PAGE);
-$returnurl = new moodle_url('/enrol/users.php', $table->get_combined_url_params());
-$actionurl = new moodle_url('/enrol/bulkchange.php', $table->get_combined_url_params()+array('bulkuserop' => $bulkuserop));
-
-$PAGE->set_url($actionurl);
-$PAGE->set_context($context);
-navigation_node::override_active_url(new moodle_url('/enrol/users.php', array('id' => $id)));
-
-$ops = $table->get_bulk_user_enrolment_operations();
-if (!array_key_exists($bulkuserop, $ops)) {
-    throw new moodle_exception('invalidbulkenrolop');
+foreach( $cids_list as $enr_course=>$enr_users )
+{
+  $course = $DB->get_record( 'course', array( 'id'=>$enr_course ), '*', MUST_EXIST );
+  $context = context_course::instance($course->id, MUST_EXIST);
+  
+  //require_login($course);
+  require_login();
+  require_capability('moodle/course:enrolreview', $context);
+  $PAGE->set_pagelayout('admin');
+  
+  $manager = new course_enrolment_manager($PAGE, $course, 'manual');
+  $table = new course_enrolment_users_table($manager, $PAGE);
+  $returnurl = new moodle_url('/bulkenroll/view.php', $table->get_combined_url_params());
+  $actionurl = new moodle_url('/bulkenroll/bulkenroll_change.php', $table->get_combined_url_params()+array('bulkuserop' => $bulkuserop));
+  
+  $PAGE->set_url($actionurl);
+  $PAGE->set_context($context);
+  navigation_node::override_active_url(new moodle_url('/bulkenroll/view.php', array('id' => $enr_course)));
+  
+  $ops = $table->get_bulk_user_enrolment_operations();
+  //if (!array_key_exists($bulkuserop, $ops)) {
+  //    throw new moodle_exception('invalidbulkenrolop');
+  //}
+  //$operation = $ops[$bulkuserop];
+  
+  // Prepare the properties of the form
+  $users = $manager->get_users_enrolments($enr_users);
+  
+  // Get the form for the bulk operation
+  //$mform = $operation->get_form($actionurl, array('users' => $users));
+  // If the mform is false then attempt an immediate process. This may be an immediate action that
+  // doesn't require user input OR confirmation.... who know what but maybe one day
+  //if ($mform === false) {
+      if ($operation->process($manager, $users, new stdClass)) {
+          redirect($returnurl);
+      } else {
+          print_error('errorwithbulkoperation', 'enrol');
+      }
+  //}
+  // Check if the bulk operation has been cancelled
+  //if ($mform->is_cancelled()) {
+  //    redirect($returnurl);
+  //}
+  //if ($mform->is_submitted() && $mform->is_validated() && confirm_sesskey()) {
+  //    if ($operation->process($manager, $users, $mform->get_data())) {
+  //        redirect($returnurl);
+  //    }
+  //}
 }
-$operation = $ops[$bulkuserop];
-
-// Prepare the properties of the form
-$users = $manager->get_users_enrolments($userids);
-
-// Get the form for the bulk operation
-//$mform = $operation->get_form($actionurl, array('users' => $users));
-// If the mform is false then attempt an immediate process. This may be an immediate action that
-// doesn't require user input OR confirmation.... who know what but maybe one day
-//if ($mform === false) {
-    if ($operation->process($manager, $users, new stdClass)) {
-        redirect($returnurl);
-    } else {
-        print_error('errorwithbulkoperation', 'enrol');
-    }
-//}
-// Check if the bulk operation has been cancelled
-//if ($mform->is_cancelled()) {
-//    redirect($returnurl);
-//}
-//if ($mform->is_submitted() && $mform->is_validated() && confirm_sesskey()) {
-//    if ($operation->process($manager, $users, $mform->get_data())) {
-//        redirect($returnurl);
-//    }
-//}
 
 $pagetitle = get_string('bulkuseroperation', 'enrol');
 
