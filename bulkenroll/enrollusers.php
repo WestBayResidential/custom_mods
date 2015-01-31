@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Bulkenrollment plugin
+ * Bulkenroll plugin
  *
- * The bulkenrollment plugin lets the administrator quickly enroll multiple employees
+ * The bulkenroll plugin lets the administrator quickly enroll multiple employees
  * in multiple courses on a single page, by selecting courses presented 
  * in a matrix on the "Bulk Enrollment" page. On clicking the 'submit' 
  * button on that page, all of the employees will be enrolled in the 
