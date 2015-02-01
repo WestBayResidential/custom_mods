@@ -22,6 +22,7 @@
  */
 
 require($_SERVER['DOCUMENT_ROOT'] . "/moodle/config.php");
+require("change.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/locallib.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/users_forms.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/renderer.php");
@@ -29,17 +30,22 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/group/lib.php");
 
 global $CFG, $DATA, $PAGE, $OUTPUT;
 
-$select     = required_param_array('select', PARAM_INT); // array of course/emps for enrollment
+//Retrieve the array of course/employees selected for enrollment
+$select     = required_param_array('select', PARAM_INT); 
 $context = context_system::instance();
 $bulkuserop = 'editselectedusers';
 
-// Extract lists of targeted courses and employees/users for bulk enrollment actionA
-// Isolate and sort the select array's keys
+// From this request, extract the lists of targeted courses and employees/users for the enrollment action
+// Isolate and sort the keys from the checktable where the enrollment choices
+// have been made by the administrator.
 $courses_target = array_keys( $select );
 $courses_srtd = natsort( $courses_target );
+
 // Init lists of course ids and user ids
 $cids_list = array();
 $uids_list = array();
+
+// Now make separate lists of courses and userids
 foreach($courses_target as $cid_targ)
 {
   // The first half of the retrieved key is the course_id
@@ -61,6 +67,7 @@ foreach($courses_target as $cid_targ)
     }
 }
 
+// With lists for the courseids and userids that need to be enrolled in them,
 foreach( $cids_list as $enr_course=>$enr_users )
 {
   $course = $DB->get_record( 'course', array( 'id'=>$enr_course ), '*', MUST_EXIST );
