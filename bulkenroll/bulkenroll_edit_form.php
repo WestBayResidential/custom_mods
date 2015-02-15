@@ -14,7 +14,7 @@ class bulkenroll_edit_form extends moodleform
 
     $mform =& $this->_form;
 
-    $mform->MoodleQuickForm("bulkenroll_form", "POST", "bulkenroll_change.php");
+    $mform->MoodleQuickForm("bulkenroll_form", "POST", "change.php");
 
     $tablestruct = $this->_customdata['coursetable'];
 

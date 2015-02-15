@@ -21,8 +21,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+require($_SERVER['DOCUMENT_ROOT'] . "/moodle/mod/bulkenroll/enrollusers.php");
 require($_SERVER['DOCUMENT_ROOT'] . "/moodle/config.php");
-require("change.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/locallib.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/users_forms.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/renderer.php");
@@ -67,58 +67,30 @@ foreach($courses_target as $cid_targ)
     }
 }
 
+$each_user = new groupenroll();
+
 // With lists for the courseids and userids that need to be enrolled in them,
 foreach( $cids_list as $enr_course=>$enr_users )
 {
-  $course = $DB->get_record( 'course', array( 'id'=>$enr_course ), '*', MUST_EXIST );
+  $enr_instance = $DB->get_record( 'enrol', array( 'courseid'=>$enr_course, 'enrol' => 'manual' ), '*', MUST_EXIST );
   $context = context_course::instance($course->id, MUST_EXIST);
   
   //require_login($course);
-  require_login();
-  require_capability('moodle/course:enrolreview', $context);
-  $PAGE->set_pagelayout('admin');
-//  
-  $manager = new course_enrolment_manager($PAGE, $course, 'manual');
-  $table = new course_enrolment_users_table($manager, $PAGE);
-//  $returnurl = new moodle_url('/bulkenroll/view.php', $table->get_combined_url_params());
-//  $actionurl = new moodle_url('/bulkenroll/bulkenroll_change.php', $table->get_combined_url_params()+array('bulkuserop' => $bulkuserop));
-//  
-//  $PAGE->set_url($actionurl);
-//  $PAGE->set_context($context);
-//  navigation_node::override_active_url(new moodle_url('/bulkenroll/view.php', array('id' => $enr_course)));
-//  
-  $ops = $table->get_bulk_user_enrolment_operations();
-  //if (!array_key_exists($bulkuserop, $ops)) {
-  //    throw new moodle_exception('invalidbulkenrolop');
-  //}
-  $operation = $ops[$bulkuserop];
-  
-  // Prepare the properties of the form
-  $users = $manager->get_users_enrolments($enr_users);
-  
-  // Get the form for the bulk operation
-  //$mform = $operation->get_form($actionurl, array('users' => $users));
-  // If the mform is false then attempt an immediate process. This may be an immediate action that
-  // doesn't require user input OR confirmation.... who know what but maybe one day
-  //if ($mform === false) {
-      if ($operation->process($manager, $users, new stdClass)) {
-          redirect($returnurl);
-      } else {
-          print_error('errorwithbulkoperation', 'enrol');
-      }
-  //}
-  // Check if the bulk operation has been cancelled
-  //if ($mform->is_cancelled()) {
-  //    redirect($returnurl);
-  //}
-  //if ($mform->is_submitted() && $mform->is_validated() && confirm_sesskey()) {
-  //    if ($operation->process($manager, $users, $mform->get_data())) {
-  //        redirect($returnurl);
-  //    }
-  //}
+//  require_login();
+//  require_capability('moodle/course:enrolreview', $context);
+  //$PAGE->set_pagelayout('admin');
+
+  foreach( $enr_users as $usr )
+  {
+    if( !$each_user->enrol_user( $enr_instance, $usr, "5" ))  
+    {
+      print_r( "Enrollment failed for user $usr" );
+      continue;
+    }
+  }
+
 }
 
-$pagetitle = get_string('bulkuseroperation', 'enrol');
 
 $PAGE->set_title($pagetitle);
 $PAGE->set_heading($pagetitle);

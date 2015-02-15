@@ -20,7 +20,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+//defined('MOODLE_INTERNAL') || die();
 
 
 /**
@@ -101,7 +101,8 @@ class groupenroll extends enrol_plugin {
      * @param stdClass $ue A user enrolment object
      * @return array An array of user_enrolment_actions
      */
-    public function get_user_enrolment_actions(course_enrolment_manager $manager, $ue) {
+    public function get_user_enrolment_actions(course_enrolment_manager $manager, $ue) 
+    {
         $actions = array();
         $context = $manager->get_context();
         $instance = $ue->enrolmentinstance;
@@ -138,36 +139,6 @@ class groupenroll extends enrol_plugin {
         }
     }
 
-
-    /**
-     * Process any future enrollments stored in the buffer.
-     * @param progress_trace $trace
-     * @return bool true if any data processed, false if not
-     */
-    protected function process_buffer(progress_trace $trace) {
-        global $DB;
-
-//        if (!$future_enrols = $DB->get_records_select('enrol_flatfile', "timestart < ?", array(time()))) {
-//            $trace->output("No enrolments to be processed in flatfile buffer");
-//            $trace->finished();
-//            return false;
-//        }
-//
-//        $trace->output("Starting processing of flatfile buffer");
-//        foreach($future_enrols as $en) {
-//            $user = $DB->get_record('user', array('id'=>$en->userid));
-//            $course = $DB->get_record('course', array('id'=>$en->courseid));
-//            if ($user and $course) {
-//                $trace->output("buffer: $en->action $en->roleid $user->id $course->id $en->timestart $en->timeend", 1);
-//                $this->process_records($trace, $en->action, $en->roleid, $user, $course, $en->timestart, $en->timeend, false);
-//            }
-//            $DB->delete_records('enrol_flatfile', array('id'=>$en->id));
-//        }
-//        $trace->output("Finished processing of flatfile buffer");
-//        $trace->finished();
-
-        return true;
-    }
 
     /**
      * Process user enrolment line.
