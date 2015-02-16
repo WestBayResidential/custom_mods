@@ -15,13 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Flatfile enrolment plugin.
+ * This plugin lets the user specify a "staff" enrolment action, in 
+ * which a group of employees are enrolled in a list of courses in 
+ * a single administrative action.
  *
- * This plugin lets the user specify a "flatfile" (CSV) containing enrolment information.
- * On a regular cron cycle, the specified file is parsed and then deleted.
- *
- * @package    enrol_flatfile
- * @copyright  2010 Eugene Venter
+ * @package    enrol_staff
+ * @copyright  2015 Paul LaRiviere (plariv@augurynet.com)
+ *             Based on code by Eugene Venter (2010)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -29,22 +29,10 @@ defined('MOODLE_INTERNAL') || die();
 
 
 /**
- * Flatfile enrolment plugin implementation.
+ * Staff enrolment plugin implementation.
  *
- * Comma separated file assumed to have four or six fields per line:
- *   operation, role, idnumber(user), idnumber(course) [, starttime [, endtime]]
- * where:
- *   operation        = add | del
- *   role             = student | teacher | teacheredit
- *   idnumber(user)   = idnumber in the user table NB not id
- *   idnumber(course) = idnumber in the course table NB not id
- *   starttime        = start time (in seconds since epoch) - optional
- *   endtime          = end time (in seconds since epoch) - optional
- *
- * @author  Eugene Venter - based on code by Petr Skoda, Martin Dougiamas, Martin Langhoff and others
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class enrol_flatfile_plugin extends enrol_plugin {
+class enrol_staff_plugin extends enrol_plugin {
     protected $lasternoller = null;
     protected $lasternollercourseid = 0;
 
@@ -64,6 +52,16 @@ class enrol_flatfile_plugin extends enrol_plugin {
      * @return bool - true means user with 'enrol/xxx:unenrol' may unenrol others freely, false means nobody may touch user_enrolments
      */
     public function allow_unenrol(stdClass $instance) {
+        return true;
+    }
+
+    /**
+     * Does this plugin allow enrolment of users from code other than this plugin?
+     *
+     * @param stdClass $instance course enrol instance
+     * @return bool - true means user with 'enrol/xxx:unenrol' may enrol others freely, false means nobody may touch user_enrolments
+     */
+    public function allow_enrol(stdClass $instance) {
         return true;
     }
 
@@ -118,11 +116,11 @@ class enrol_flatfile_plugin extends enrol_plugin {
         $instance = $ue->enrolmentinstance;
         $params = $manager->get_moodlepage()->url->params();
         $params['ue'] = $ue->id;
-        if ($this->allow_unenrol_user($instance, $ue) && has_capability("enrol/flatfile:unenrol", $context)) {
+        if ($this->allow_unenrol_user($instance, $ue) && has_capability("enrol/staff:unenrol", $context)) {
             $url = new moodle_url('/enrol/unenroluser.php', $params);
             $actions[] = new user_enrolment_action(new pix_icon('t/delete', ''), get_string('unenrol', 'enrol'), $url, array('class'=>'unenrollink', 'rel'=>$ue->id));
         }
-        if ($this->allow_manage($instance) && has_capability("enrol/flatfile:manage", $context)) {
+        if ($this->allow_manage($instance) && has_capability("enrol/staff:manage", $context)) {
             $url = new moodle_url('/enrol/editenrolment.php', $params);
             $actions[] = new user_enrolment_action(new pix_icon('t/edit', ''), get_string('edit'), $url, array('class'=>'editenrollink', 'rel'=>$ue->id));
         }
@@ -150,8 +148,8 @@ class enrol_flatfile_plugin extends enrol_plugin {
     }
 
     public function cron() {
-        $trace = new text_progress_trace();
-        $this->sync($trace);
+//        $trace = new text_progress_trace();
+//        $this->sync($trace);
     }
 
     /**
@@ -160,7 +158,7 @@ class enrol_flatfile_plugin extends enrol_plugin {
      * @return int exit code, 0 means ok, 2 means plugin disabled
      */
     public function sync(progress_trace $trace) {
-        if (!enrol_is_enabled('flatfile')) {
+        if (!enrol_is_enabled('staff')) {
             return 2;
         }
 
@@ -181,8 +179,8 @@ class enrol_flatfile_plugin extends enrol_plugin {
             if ($log = $buffer->get_buffer()) {
                 $eventdata = new stdClass();
                 $eventdata->modulename        = 'moodle';
-                $eventdata->component         = 'enrol_flatfile';
-                $eventdata->name              = 'flatfile_enrolment';
+                $eventdata->component         = 'enrol_staff';
+                $eventdata->name              = 'staff_enrolment';
                 $eventdata->userfrom          = get_admin();
                 $eventdata->userto            = get_admin();
                 $eventdata->subject           = 'Flatfile Enrolment Log';
@@ -221,7 +219,7 @@ class enrol_flatfile_plugin extends enrol_plugin {
     }
 
     /**
-     * Process flatfile.
+     * Process staff.
      * @param progress_trace $trace
      * @return bool true if any data processed, false if not
      */
@@ -335,12 +333,12 @@ class enrol_flatfile_plugin extends enrol_plugin {
         if (!unlink($filelocation)) {
             $eventdata = new stdClass();
             $eventdata->modulename        = 'moodle';
-            $eventdata->component         = 'enrol_flatfile';
-            $eventdata->name              = 'flatfile_enrolment';
+            $eventdata->component         = 'enrol_staff';
+            $eventdata->name              = 'staff_enrolment';
             $eventdata->userfrom          = get_admin();
             $eventdata->userto            = get_admin();
-            $eventdata->subject           = get_string('filelockedmailsubject', 'enrol_flatfile');
-            $eventdata->fullmessage       = get_string('filelockedmail', 'enrol_flatfile', $filelocation);
+            $eventdata->subject           = get_string('filelockedmailsubject', 'enrol_staff');
+            $eventdata->fullmessage       = get_string('filelockedmail', 'enrol_staff', $filelocation);
             $eventdata->fullmessageformat = FORMAT_PLAIN;
             $eventdata->fullmessagehtml   = '';
             $eventdata->smallmessage      = '';
@@ -364,13 +362,13 @@ class enrol_flatfile_plugin extends enrol_plugin {
     protected function process_buffer(progress_trace $trace) {
         global $DB;
 
-        if (!$future_enrols = $DB->get_records_select('enrol_flatfile', "timestart < ?", array(time()))) {
-            $trace->output("No enrolments to be processed in flatfile buffer");
+        if (!$future_enrols = $DB->get_records_select('enrol_staff', "timestart < ?", array(time()))) {
+            $trace->output("No enrolments to be processed in staff buffer");
             $trace->finished();
             return false;
         }
 
-        $trace->output("Starting processing of flatfile buffer");
+        $trace->output("Starting processing of staff buffer");
         foreach($future_enrols as $en) {
             $user = $DB->get_record('user', array('id'=>$en->userid));
             $course = $DB->get_record('course', array('id'=>$en->courseid));
@@ -378,9 +376,9 @@ class enrol_flatfile_plugin extends enrol_plugin {
                 $trace->output("buffer: $en->action $en->roleid $user->id $course->id $en->timestart $en->timeend", 1);
                 $this->process_records($trace, $en->action, $en->roleid, $user, $course, $en->timestart, $en->timeend, false);
             }
-            $DB->delete_records('enrol_flatfile', array('id'=>$en->id));
+            $DB->delete_records('enrol_staff', array('id'=>$en->id));
         }
-        $trace->output("Finished processing of flatfile buffer");
+        $trace->output("Finished processing of staff buffer");
         $trace->finished();
 
         return true;
@@ -403,7 +401,7 @@ class enrol_flatfile_plugin extends enrol_plugin {
 
         // Check if timestart is for future processing.
         if ($timestart > time() and $buffer_if_future) {
-            // Populate into enrol_flatfile table as a future role to be assigned by cron.
+            // Populate into enrol_staff table as a future role to be assigned by cron.
             // Note: since 2.0 future enrolments do not cause problems if you disable guest access.
             $future_en = new stdClass();
             $future_en->action       = $action;
@@ -413,7 +411,7 @@ class enrol_flatfile_plugin extends enrol_plugin {
             $future_en->timestart    = $timestart;
             $future_en->timeend      = $timeend;
             $future_en->timemodified = time();
-            $DB->insert_record('enrol_flatfile', $future_en);
+            $DB->insert_record('enrol_staff', $future_en);
             $trace->output("User $user->id will be enrolled later into course $course->id using role $roleid ($timestart, $timeend)", 1);
             return;
         }
@@ -422,9 +420,9 @@ class enrol_flatfile_plugin extends enrol_plugin {
 
         if ($action === 'add') {
             // Clear the buffer just in case there were some future enrolments.
-            $DB->delete_records('enrol_flatfile', array('userid'=>$user->id, 'courseid'=>$course->id, 'roleid'=>$roleid));
+            $DB->delete_records('enrol_staff', array('userid'=>$user->id, 'courseid'=>$course->id, 'roleid'=>$roleid));
 
-            $instance = $DB->get_record('enrol', array('courseid' => $course->id, 'enrol' => 'flatfile'));
+            $instance = $DB->get_record('enrol', array('courseid' => $course->id, 'enrol' => 'staff'));
             if (empty($instance)) {
                 // Only add an enrol instance to the course if non-existent.
                 $enrolid = $this->add_instance($course);
@@ -435,8 +433,8 @@ class enrol_flatfile_plugin extends enrol_plugin {
             if ($ue = $DB->get_record('user_enrolments', array('enrolid'=>$instance->id, 'userid'=>$user->id))) {
                 // Update only.
                 $this->update_user_enrol($instance, $user->id, ENROL_USER_ACTIVE, $roleid, $timestart, $timeend);
-                if (!$DB->record_exists('role_assignments', array('contextid'=>$context->id, 'roleid'=>$roleid, 'userid'=>$user->id, 'component'=>'enrol_flatfile', 'itemid'=>$instance->id))) {
-                    role_assign($roleid, $user->id, $context->id, 'enrol_flatfile', $instance->id);
+                if (!$DB->record_exists('role_assignments', array('contextid'=>$context->id, 'roleid'=>$roleid, 'userid'=>$user->id, 'component'=>'enrol_staff', 'itemid'=>$instance->id))) {
+                    role_assign($roleid, $user->id, $context->id, 'enrol_staff', $instance->id);
                 }
                 $trace->output("User $user->id enrolment updated in course $course->id using role $roleid ($timestart, $timeend)", 1);
 
@@ -463,8 +461,8 @@ class enrol_flatfile_plugin extends enrol_plugin {
 
                 $eventdata = new stdClass();
                 $eventdata->modulename        = 'moodle';
-                $eventdata->component         = 'enrol_flatfile';
-                $eventdata->name              = 'flatfile_enrolment';
+                $eventdata->component         = 'enrol_staff';
+                $eventdata->name              = 'staff_enrolment';
                 $eventdata->userfrom          = $this->get_enroller($course->id);
                 $eventdata->userto            = $user;
                 $eventdata->subject           = $subject;
@@ -502,8 +500,8 @@ class enrol_flatfile_plugin extends enrol_plugin {
 
                 $eventdata = new stdClass();
                 $eventdata->modulename        = 'moodle';
-                $eventdata->component         = 'enrol_flatfile';
-                $eventdata->name              = 'flatfile_enrolment';
+                $eventdata->component         = 'enrol_staff';
+                $eventdata->name              = 'staff_enrolment';
                 $eventdata->userfrom          = get_admin();
                 $eventdata->userto            = $enroller;
                 $eventdata->subject           = $subject;
@@ -526,7 +524,7 @@ class enrol_flatfile_plugin extends enrol_plugin {
 
         } else if ($action === 'del') {
             // Clear the buffer just in case there were some future enrolments.
-            $DB->delete_records('enrol_flatfile', array('userid'=>$user->id, 'courseid'=>$course->id, 'roleid'=>$roleid));
+            $DB->delete_records('enrol_staff', array('userid'=>$user->id, 'courseid'=>$course->id, 'roleid'=>$roleid));
 
             $action = $this->get_config('unenrolaction');
             if ($action == ENROL_EXT_REMOVED_KEEP) {
@@ -541,7 +539,7 @@ class enrol_flatfile_plugin extends enrol_plugin {
                 if (!$ue = $DB->get_record('user_enrolments', array('enrolid'=>$instance->id, 'userid'=>$user->id))) {
                     continue;
                 }
-                if ($instance->enrol === 'flatfile') {
+                if ($instance->enrol === 'staff') {
                     $plugin = $this;
                 } else {
                     if (!enrol_is_enabled($instance->enrol)) {
@@ -616,10 +614,10 @@ class enrol_flatfile_plugin extends enrol_plugin {
     }
 
     /**
-     * Returns the user who is responsible for flatfile enrolments in given curse.
+     * Returns the user who is responsible for staff enrolments in given curse.
      *
      * Usually it is the first editing teacher - the person with "highest authority"
-     * as defined by sort_by_roleassignment_authority() having 'enrol/flatfile:manage'
+     * as defined by sort_by_roleassignment_authority() having 'enrol/staff:manage'
      * or 'moodle/role:assign' capability.
      *
      * @param int $courseid enrolment instance id
@@ -632,7 +630,7 @@ class enrol_flatfile_plugin extends enrol_plugin {
 
         $context = context_course::instance($courseid);
 
-        $users = get_enrolled_users($context, 'enrol/flatfile:manage');
+        $users = get_enrolled_users($context, 'enrol/staff:manage');
         if (!$users) {
             $users = get_enrolled_users($context, 'moodle/role:assign');
         }

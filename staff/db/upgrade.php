@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Keeps track of upgrades to the enrol_flatfile plugin
+ * Keeps track of upgrades to the enrol_staff plugin
  *
- * @package    enrol_flatfile
+ * @package    enrol_staff
  * @copyright  2010 Aparup Banerjee <aparup@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-function xmldb_enrol_flatfile_upgrade($oldversion) {
+function xmldb_enrol_staff_upgrade($oldversion) {
     global $CFG, $DB;
 
     $dbman = $DB->get_manager();

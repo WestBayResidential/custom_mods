@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,18 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+
 /**
- * Flat file enrolment plugin version specification.
+ * Defines the version of staff enrollment
  *
- * @package    enrol_flatfile
- * @copyright  2010 Eugene Venter
- * @author     Eugene Venter
+ * This code fragment is called by moodle_needs_upgrading() and
+ * /admin/index.php
+ *
+ * @package    enrol_staff
+ * @copyright  2014 Paul LaRiviere (plariv@augurynet.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2013110500;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2013110500;        // Requires this Moodle version
-$plugin->component = 'enrol_flatfile';  // Full name of the plugin (used for diagnostics)
-$plugin->cron      = 60;
+//$module->version   = 0;               // If version == 0 then module will not be installed
+$module->version   = 2015021600;      // The current module version (Date: YYYYMMDDXX)
+$module->requires  = 2013110500;      // Requires this Moodle version
+$module->cron      = 0;               // Period for cron to check this module (secs)
+$module->component = 'enrol_staff';   // Full name of the plugin (used for diagnostics)

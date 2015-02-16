@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Capabilities for manual enrolment plugin.
+ * Capabilities for staff enrolment plugin.
  *
- * @package    enrol_flatfile
- * @copyright  2012 Petr Skoda {@link http://skodak.org}
+ * @package    enrol_staff
+ * @copyright  2015 Paul LaRiviere (plariv@augurynet.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,15 +26,23 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
     /* Manage enrolments of users - requires allowmodifications enabled. */
-    'enrol/flatfile:manage' => array(
+    'enrol/staff:manage' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
         )
     ),
 
-    /* Unenrol anybody (including self) - requires allowmodifications enabled */
-    'enrol/flatfile:unenrol' => array(
+    /* Enrol staff */
+    'enrol/staff:enrol' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+        )
+      ),
+      
+    /* Unenrol staff */
+    'enrol/staff:unenrol' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(

@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Special flatfile settings.
+ * Special staff settings.
  *
- * @package    enrol_flatfile
- * @copyright  2013 Petr Skoda {@link http://skodak.org}
+ * @package    enrol_staff
+ * @copyright  2015 Paul LaRiviere (plariv@augurynet.com))
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -30,10 +30,10 @@ require_once("$CFG->libdir/adminlib.php");
 /**
  * Setting class that stores only non-empty values.
  */
-class enrol_flatfile_role_setting extends admin_setting_configtext {
+class enrol_staff_role_setting extends admin_setting_configtext {
 
     public function __construct($role) {
-        parent::__construct('enrol_flatfile/map_'.$role->id, $role->localname, '', $role->shortname);
+        parent::__construct('enrol_staff/map_'.$role->id, $role->localname, '', $role->shortname);
     }
 
     public function config_read($name) {

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="enrol/flatfile/db" VERSION="20120122" COMMENT="XMLDB file for Moodle enrol/flatfile"
+<XMLDB PATH="enrol/staff/db" VERSION="20150215" COMMENT="XMLDB file for Moodle enrol/staff"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="enrol_flatfile" COMMENT="enrol_flatfile table retrofitted from MySQL">
+    <TABLE NAME="enrol_staff" COMMENT="enrol_staff table retrofitted from MySQL">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="action" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false"/>
