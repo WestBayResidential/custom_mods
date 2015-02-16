@@ -30,7 +30,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 //$module->version   = 0;               // If version == 0 then module will not be installed
-$module->version   = 2015021600;      // The current module version (Date: YYYYMMDDXX)
+$module->version   = 2015021601;      // The current module version (Date: YYYYMMDDXX)
 $module->requires  = 2013110500;      // Requires this Moodle version
 $module->cron      = 0;               // Period for cron to check this module (secs)
 $module->component = 'enrol_staff';   // Full name of the plugin (used for diagnostics)

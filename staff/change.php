@@ -73,20 +73,29 @@ $staff_enroller = new enrol_staff_plugin();
 // With lists for the courseids and userids that need to be enrolled in them,
 foreach( $cids_list as $enr_course=>$enr_users )
 {
-  $enr_instance = $DB->get_record( 'enrol', array( 'courseid'=>$enr_course, 'enrol' => 'staff' ), '*', MUST_EXIST );
-  $context = context_course::instance($enr_course, MUST_EXIST);
+  // Get the course object
+  $enr_course_obj = $DB->get_record( 'course', array( 'id'=>$enr_course ));
+  // Similar to flatfile enrollment, ie. if there's no enrol record, add one then retrieve it
+  $enr_instance = $DB->get_record( 'enrol', array( 'courseid'=>$enr_course, 'enrol' => 'staff' ) );
+  if( empty($enr_instance))
+  {
+    // Get the course object
+    $enr_course_obj = $DB->get_record( 'course', array( 'id'=>$enr_course ));
+    // It is ok to add an enroll instance to the course if it is not yet there
+    $enroll_id = $staff_enroller->add_instance( $enr_course_obj );
+    $enr_instance = $DB->get_record( 'enrol', array( 'id' => $enroll_id ));
+  }
+  //$context = context_course::instance($enr_course, MUST_EXIST);
   
-  //require_login($course);
-//  require_login();
-//  require_capability('moodle/course:enrolreview', $context);
-  //$PAGE->set_pagelayout('admin');
-
   foreach( $enr_users as $usr )
   {
     if( !$staff_enroller->enrol_user( $enr_instance, $usr, "5" ))  
     {
       print_r( "Enrollment failed for user $usr" );
       continue;
+    } else
+    {
+      print_r( "User id $usr is enrolled in course $enr_course" );
     }
   }
 

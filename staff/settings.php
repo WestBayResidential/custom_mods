@@ -32,7 +32,7 @@ if ($ADMIN->fulltree) {
     //--- general settings -----------------------------------------------------------------------------------
     $settings->add(new admin_setting_heading('enrol_staff_settings', '', get_string('pluginname_desc', 'enrol_staff')));
 
-    $settings->add(new admin_setting_configfile('enrol_staff/location', get_string('location', 'enrol_staff'), get_string('location_desc', 'enrol_staff'), ''));
+    //$settings->add(new admin_setting_configfile('enrol_staff/location', get_string('location', 'enrol_staff'), get_string('location_desc', 'enrol_staff'), ''));
 
     $options = core_text::get_encodings();
     $settings->add(new admin_setting_configselect('enrol_staff/encoding', get_string('encoding', 'enrol_staff'), '', 'UTF-8', $options));
