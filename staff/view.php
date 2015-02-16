@@ -32,7 +32,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/enrol/staff/staff_edit_form.php'
 require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/enrol/staff/staff_select_form.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/enrol/staff/checktable.php');
 
-$id = optional_param('id', 0, PARAM_INT); // course_module ID, or
+$id = optional_param('id', 0, PARAM_INT); // course_module ID
 $res = optional_param('res', 'ressel', PARAM_TEXT); // name of residence
 $cat = optional_param('cat', 'catsel', PARAM_TEXT);  // course category id
 
@@ -43,7 +43,7 @@ $context = context_system::instance();
 // Set up the page here
 // 
 $PAGE->set_url('/enrol/staff/view.php');
-$PAGE->set_title(format_string('Bulk Enrollments'));
+$PAGE->set_title(format_string('Staff Enrollment'));
 $PAGE->set_heading(format_string('Set up employee enrollments'));
 $PAGE->set_context($context);
 
@@ -115,7 +115,7 @@ $mform = new staff_select_form( null, array( 'residencelist'=>$all_residences,
   // Get list of courses and count in the selected category
   $table = "course";
   $select = "category = \"{$cat}\"";
-  $params = NULL;
+  $params = array("visible"=>TRUE);
   $fields = 'shortname, id';
   $sort = '';
 

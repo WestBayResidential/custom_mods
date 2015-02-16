@@ -13,8 +13,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Bulk user enrollment processing.
- * Adapted from a core Moodle module by Sam Hemelryk (c)2013
+ * Staff enrollment processing.
+ * Adapted from flatfile enrollment by Eugene Venter(c)2010
  *
  * @package    enrol_staff
  * @copyright  2015 Paul LaRiviere (plariv@augurynet.com)
@@ -22,19 +22,14 @@
  */
 
 require($_SERVER['DOCUMENT_ROOT'] . "/moodle/config.php");
-//require($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/staff/enroll_staff.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/staff/lib.php");
-//require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/locallib.php");
-//require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/users_forms.php");
-//require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/renderer.php");
-//require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/enrollib.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/staff/staff_completion_form.php");
 
 global $CFG, $DATA, $PAGE, $OUTPUT;
 
 //Retrieve the array of staff selected for enrollment
 $select     = required_param_array('select', PARAM_INT); 
 $context = context_system::instance();
-//$bulkuserop = 'editselectedusers';
 
 // From this request, extract the lists of targeted courses and staff for the enrollment action
 // Isolate and sort the keys from the checktable where the enrollment choices
@@ -71,6 +66,10 @@ foreach($courses_target as $cid_targ)
 $staff_enroller = new enrol_staff_plugin();
 
 // With lists for the courseids and userids that need to be enrolled in them,
+
+// Prepare the confirmation list for display
+$staffenrolled = "<ul>"; 
+
 foreach( $cids_list as $enr_course=>$enr_users )
 {
   // Get the course object
@@ -85,26 +84,29 @@ foreach( $cids_list as $enr_course=>$enr_users )
     $enroll_id = $staff_enroller->add_instance( $enr_course_obj );
     $enr_instance = $DB->get_record( 'enrol', array( 'id' => $enroll_id ));
   }
-  //$context = context_course::instance($enr_course, MUST_EXIST);
-  
+
   foreach( $enr_users as $usr )
   {
     if( !$staff_enroller->enrol_user( $enr_instance, $usr, "5" ))  
     {
-      print_r( "Enrollment failed for user $usr" );
-      continue;
+      $staffenrolled .= "<li>Enrollment problem for userid $usr in courseid $enr_course</li>";
     } else
-    {
-      print_r( "User id $usr is enrolled in course $enr_course" );
-    }
+      {
+        $staffenrolled .= "<li>Userid $usr enrolled in courseid $enr_course</li>";
+      }
   }
-
 }
+// Close off the confirmation list for display
+$staffenrolled .= "</ul>";
 
 
-$PAGE->set_title($pagetitle);
-$PAGE->set_heading($pagetitle);
+
+$mform = new staff_completion_form( null, array( 'staffenrolled'=>$staffenrolled ));
+$PAGE->set_url('/enrol/staff/view.php?id=1');
+$PAGE->set_title(format_string('Staff Enrollment'));
+$PAGE->set_heading(format_string('Confirmation of enrollments'));
+
+// Output starts here
 echo $OUTPUT->header();
-echo $OUTPUT->heading($operation->get_title());
-//$mform->display();
+$mform->display();
 echo $OUTPUT->footer();

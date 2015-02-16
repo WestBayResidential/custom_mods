@@ -21,8 +21,6 @@ class staff_edit_form extends moodleform
     //--------------------------------------------------------------
 
     $mform->addElement( "html", $tablestruct );
-
-    //$this->add_action_buttons();
     $mform->addElement("submit", "submitbutton", "Enroll");
 
   }
