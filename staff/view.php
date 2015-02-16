@@ -114,8 +114,8 @@ $mform = new staff_select_form( null, array( 'residencelist'=>$all_residences,
 
   // Get list of courses and count in the selected category
   $table = "course";
-  $select = "category = \"{$cat}\"";
-  $params = array("visible"=>TRUE);
+  $select = "category = \"{$cat}\" AND visible = TRUE";
+  $params = NULL;
   $fields = 'shortname, id';
   $sort = '';
 
