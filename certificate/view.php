@@ -24,7 +24,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once("../../config.php");
+//require_once("../../config.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/config.php");
 require_once("$CFG->dirroot/mod/certificate/deprecatedlib.php");
 require_once("$CFG->dirroot/mod/certificate/lib.php");
 require_once("$CFG->libdir/pdflib.php");
