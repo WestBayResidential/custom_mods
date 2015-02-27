@@ -16,18 +16,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Code fragment to define the version of the certificate module
+ * Provides some custom settings for the certificate module
  *
  * @package    mod
  * @subpackage certificate
- * @copyright  Mark Nelson <markn@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late
+ * @copyright  Michael Avelar <michaela@moodlerooms.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$plugin->version   = 2014041801; // The current module version (Date: YYYYMMDDXX)
-$plugin->requires  = 2013111800; // Requires this Moodle version
-$plugin->cron      = 0; // Period for cron to check this module (secs)
-$plugin->component = 'mod_certificate';
+defined('MOODLE_INTERNAL') || die;
 
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = "Stable"; // User-friendly version number
+require_once($CFG->dirroot.'/mod/certificate/adminsetting.class.php');
+
+$settings->add(new mod_certificate_admin_setting_upload('certificate/uploadimage',
+    get_string('uploadimage', 'certificate'), get_string('uploadimagedesc', 'certificate'), ''));
+
+?>
