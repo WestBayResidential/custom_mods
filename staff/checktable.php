@@ -26,7 +26,7 @@ function build_checktable($courselist, $namelist, $residence)
     $corder++;
     $cnum = $cnum ? $cnum : "NA";
     $cnumlist[ $corder ] = $cnum;
-    $checktable .= '<th>' . $cname . '<br />' . $cnum . '<br /><input type="checkbox" id="col_' . $corder . '" name="coursesel" value="' . $cnum . '"></th>';
+    $checktable .= '<th>' . $cname . '<br />' . $cnum . '</th>';
   }
   $checktable .= '</tr></thead><tbody><tr><td>';
   
