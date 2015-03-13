@@ -4,7 +4,8 @@
  * Get google code and call the normal login page
  * Needed to add the parameter authprovider in order to identify the authentication provider
  */
-require('../../config.php');
+require($_SERVER['DOCUMENT_ROOT'] . '/moodle/config.php');
+# require('../../config.php');
 $code = optional_param('code', '', PARAM_TEXT); //Google can return an error
 
 if (empty($code)) {
