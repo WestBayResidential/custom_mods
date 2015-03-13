@@ -1,0 +1,12 @@
+#!/usr/bin/php
+
+<?php
+
+/**
+* This script deploys the customized modules for the WBLMS
+* Moodle instance. Some customizations are mod plugins principally
+* due to historic reasons, while a few are located in the 
+* <moodleroot>/local directory. Pay attention.
+*
+*/
+
