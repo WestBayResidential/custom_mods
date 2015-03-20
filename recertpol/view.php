@@ -26,12 +26,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// require_once(dirname(__FILE__).'/lib.php');
-// require_once('policies.php');
-
 require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/config.php');
 require_once('lib.php');
-require_once('policies.php');
 require_once('classes/recertpol.php');
 require_once('recert_form.php');
 
@@ -53,10 +49,7 @@ if ($id)
     $recertpol  = $DB->get_record('recertpol', array('id' => $n), '*', MUST_EXIST);
     $course     = $DB->get_record('course', array('id' => $recertpol->course), '*', MUST_EXIST);
     $cm         = get_coursemodule_from_instance('recertpol', $recertpol->id, $course->id, false, MUST_EXIST);
-  } //else 
-    //{
-    //$courseList = get_courses();
-    //}
+  }
 
 require_login();
 $context = context_system::instance();
@@ -101,7 +94,6 @@ foreach( $courseList as $courseObj )
   {
     // It's a production course, so count enrollees and get its policy
     $countrec = $DB->count_records_sql( $sql, array('courseid'=> $courseObj->id) ); 
-    //$enrcount = $countrec[0];
     echo print_r($countrec, true);
     $rcPolicy = new recertpol();
     $rcPolicy->get_policy( $courseObj->id );
@@ -143,7 +135,6 @@ if ( $mform->is_cancelled() )
   
 } else if ( $courseCur )
   {
-    //echo print_r($courseCur, true);
     for( $i=0; $i<=count( $courseCur ); $i++ )
     {
       if ( $courseNextOri[$i] <> $courseNextUpd[$i] )
