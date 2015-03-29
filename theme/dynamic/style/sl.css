@@ -875,17 +875,13 @@ cursor:pointer;}
 .gettheselogs:hover
  { background-color:#666666; width:65px; color:#FFFFFF; padding:0px; height:23px; font-family:"Times New Roman"; font-weight:bold;}
 
-/* Dynamic Theme Specific settings for Administrators to customise css.
----------------------------*/
-[[setting:customcss]]
-
 
 /* Important styles supporting horizontal scrolling */
 
 .container {
    /* Attach fixed-th-table to this container,
       in order to layout fixed-th-table
-      in the same way as scolled-td-table" */
+      in the same way as scrolled-td-table" */
    position: relative;
     
    /* Truncate fixed-th-table */
@@ -948,8 +944,14 @@ tr:last-child th {
 /* Unimportant styles */
 
 .container {
-    width: 250px;
+    width: 900px;
 }
 td, th {
    padding: 5px;
 }
+
+
+/* Dynamic Theme Specific settings for Administrators to customise css.
+---------------------------*/
+[[setting:customcss]]
+
