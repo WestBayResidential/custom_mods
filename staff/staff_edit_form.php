@@ -23,8 +23,11 @@ class staff_edit_form extends moodleform
     $mform->addElement( "html", "<div class=\"container\">" );
     $mform->addElement( "html", "<div class=\"fixed-th-table-wrapper\">" );
     $mform->addElement( "html", $tablestruct );
+    $mform->addElement( "html", "</div>");
     $mform->addElement( "html", "<div class=\"scrolled-td-table-wrapper\">" );
     $mform->addElement( "html", $tablestruct );
+    $mform->addElement( "html", "</div>");
+    $mform->addElement( "html", "</div>");
 
     $mform->addElement("submit", "submitbutton", "Enroll");
 
