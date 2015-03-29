@@ -249,7 +249,9 @@ body {                /* Define margins and background colour/image */
 }
 
 body,h1,h2,h3,h4,h5,h6,p,ul,ol,dl,input,textarea {   /* Set fonttype for site */ 
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
+    font-family: "Freesans", Freesans, Helvetica, Arial, sans-serif;
+    line-height: 1.2;
 }
 
 a:link {        /* Defining all link styles*/
