@@ -878,12 +878,12 @@ cursor:pointer;}
 
 /* Important styles supporting horizontal scrolling */
 
-div.horiz_container {
+div.vert_container {
   height: 300px;
   overflow: auto;
 }
  
- .container {
+ .horiz_container {
    /* Attach fixed-th-table to this container,
       in order to layout fixed-th-table
       in the same way as scrolled-td-table" */
@@ -948,7 +948,7 @@ tr:last-child th {
 
 /* Unimportant styles */
 
-.container {
+.horiz_container {
     width: 900px;
 }
 td, th {
