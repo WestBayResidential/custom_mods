@@ -107,8 +107,14 @@ $mform = new staff_select_form( null, array( 'residencelist'=>$all_residences,
           JOIN mdl_user_info_data b ON a.id = b.userid 
           WHERE a.deleted=0
           AND b.fieldid=7
-          AND b.data LIKE '%" . $res . "%'
           ORDER BY a.lastname";
+//  $sql = "SELECT a.id, a.lastname, a.firstname, b.fieldid, b.data
+//          FROM mdl_user a
+//          JOIN mdl_user_info_data b ON a.id = b.userid 
+//          WHERE a.deleted=0
+//          AND b.fieldid=7
+//          AND b.data LIKE '%" . $res . "%'
+//          ORDER BY a.lastname";
   $emplRoster = $DB->get_records_sql( $sql );
   $emplCount = count( $emplRoster );
 
