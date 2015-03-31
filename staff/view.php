@@ -33,7 +33,6 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/enrol/staff/staff_select_form.ph
 require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/enrol/staff/checktable.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID
-$res = optional_param('res', 'ressel', PARAM_TEXT); // name of residence
 $cat = optional_param('cat', 'catsel', PARAM_TEXT);  // course category id
 
 // Confirm that user is logged in and set the page context
@@ -96,9 +95,8 @@ $all_categories = array( "catsel" => "Select a category",
                        );
 
 // Instantiate the parameter selection form for use on this page
-$mform = new staff_select_form( null, array( 'residencelist'=>$all_residences,
-  'categorylist'=>$all_categories ));
-} elseif ( ($res != 'ressel' ) && ($cat != 'catsel' ) )
+$mform = new staff_select_form( null, array( 'categorylist'=>$all_categories ));
+} elseif ( $cat != 'catsel' )
   {
   
   // Get employee roster and count of selected residence
@@ -108,13 +106,6 @@ $mform = new staff_select_form( null, array( 'residencelist'=>$all_residences,
           WHERE a.deleted=0
           AND b.fieldid=7
           ORDER BY a.lastname";
-//  $sql = "SELECT a.id, a.lastname, a.firstname, b.fieldid, b.data
-//          FROM mdl_user a
-//          JOIN mdl_user_info_data b ON a.id = b.userid 
-//          WHERE a.deleted=0
-//          AND b.fieldid=7
-//          AND b.data LIKE '%" . $res . "%'
-//          ORDER BY a.lastname";
   $emplRoster = $DB->get_records_sql( $sql );
   $emplCount = count( $emplRoster );
 
@@ -128,7 +119,7 @@ $mform = new staff_select_form( null, array( 'residencelist'=>$all_residences,
   $courses = $DB->get_records_select_menu( $table, $select, $params, $sort, $fields );
   $coursesCount = count( $courses );
 
-  $tablestuff = build_checktable( $courses, $emplRoster, $res);
+  $tablestuff = build_checktable( $courses, $emplRoster);
 
   $mform = new staff_edit_form( NULL, array( 'coursetable'=>$tablestuff ));
   

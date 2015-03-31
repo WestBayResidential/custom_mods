@@ -7,14 +7,13 @@
 // @param string $category  Name of category for the course list
 // @param array $namelist  Array of employee names from a select residence
 // @param integer $namecount  Number of emloyees listed from the selected residence
-// @param string $residence  Name of the selected residence
 //
 
-function build_checktable($courselist, $namelist, $residence)
+function build_checktable($courselist, $namelist)
 {
   $checktable = '<table class="draggable"><thead><tr>';
   // Print header row with residence name and course designations
-  $checktable .= '<th>' . $residence . '</th>';
+  $checktable .= '<th>Employee</th>';
 
   // Make a column heading for each course and include a 'select all' checkbox,
   // and set up an array of the course numbers for use later to create the input checkbox value
@@ -26,7 +25,7 @@ function build_checktable($courselist, $namelist, $residence)
     $corder++;
     $cnum = $cnum ? $cnum : "NA";
     $cnumlist[ $corder ] = $cnum;
-    $checktable .= '<th>' . $cname . '</th>';
+    $checktable .= '<th>' . $cname . '<br /><input type="checkbox" name="col_' . $corder . ' onClick="checkAll( this.form )" /></th>';
   }
   $checktable .= '</tr></thead><tbody><tr><td>';
   
@@ -44,7 +43,7 @@ function build_checktable($courselist, $namelist, $residence)
   }
   $checktable .= '</tbody></table>';
 
-  xdebug_break();
+  // xdebug_break();
 
   return $checktable;
 
