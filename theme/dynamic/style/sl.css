@@ -955,6 +955,10 @@ td, th {
    padding: 5px;
 }
 
+div.no-overflow {
+  padding-left: 4px;
+}
+
 
 /* Dynamic Theme Specific settings for Administrators to customise css.
 ---------------------------*/
