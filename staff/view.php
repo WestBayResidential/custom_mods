@@ -45,44 +45,48 @@ $PAGE->set_url('/enrol/staff/view.php');
 $PAGE->set_title(format_string('Staff Enrollment'));
 $PAGE->set_heading(format_string('Set up employee enrollments'));
 $PAGE->set_context($context);
+$PAGE->requires->css( 'http://cdn.datatables.net/1.10.5/css/jquery.dataTables.css' );
+$PAGE->requires->js( 'http://code.jquery.com/jquery-1.10.2.min.js' )->in_head();
+$PAGE->requires->js( 'http://cdn.datatables.net/1.10.5/js/jquery.dataTables.js' )->in_head();
+$PAGE->requires->js( 'enrol/staff/js/stafftab.js' )->in_head();
 
 //add_to_log($course->id, 'staff', 'view', "view.php?id={$cm->id}", $staff->name, $cm->id);
 if( $id )
 {
 
 // Set up the residences list for selection
-$all_residences = array( "ressel" => "Select a residence",
-                         "AMANDA"=>"Amanda",
-                         "APARTMENTS"=>"Apartments",
-                         "BRACKEN"=>"Bracken",
-                         "BURDICK"=>"Burdick",
-                         "CELESTIA"=>"Celestia",
-                         "CENTRAL"=>"Central",
-                         "CHURCH"=>"Church",
-                         "CLAYPOOL"=>"Claypool",
-                         "DARLENE"=>"Darlene",
-                         "DAWN"=>"Dawn",
-                         "DAY PROGRAM"=>"Day Program",
-                         "EVERGREEN"=>"Evergreen",
-                         "FAIRWAY"=>"Fairway",
-                         "GLEN HILLS"=>"Glen Hills",
-                         "GRAND"=>"Grand",
-                         "GREENWICH"=>"Greenwich",
-                         "HAVERHILL"=>"Haverhill",
-                         "HELEN"=>"Helen",
-                         "IMERA"=>"Imera",
-                         "KNOLLWOOD"=>"Knollwood",
-                         "LANCELOTTA"=>"Lancelotta",
-                         "LILLIAN"=>"Lillian",
-                         "MARIE"=>"Marie",
-                         "NATICK"=>"Natick",
-                         "OAKLAND"=>"Oakland",
-                         "OFFICE"=>"Office",
-                         "REDDINGTON"=>"Reddington",
-                         "SHERWOOD"=>"Sherwood",
-                         "TARTAGLIA"=>"Tartaglia",
-                         "THISTLE"=>"Thistle",
-                         "WHITING"=>"Whiting");
+// $all_residences = array( "ressel" => "Select a residence",
+//                          "AMANDA"=>"Amanda",
+//                          "APARTMENTS"=>"Apartments",
+//                          "BRACKEN"=>"Bracken",
+//                          "BURDICK"=>"Burdick",
+//                          "CELESTIA"=>"Celestia",
+//                          "CENTRAL"=>"Central",
+//                          "CHURCH"=>"Church",
+//                          "CLAYPOOL"=>"Claypool",
+//                          "DARLENE"=>"Darlene",
+//                          "DAWN"=>"Dawn",
+//                          "DAY PROGRAM"=>"Day Program",
+//                          "EVERGREEN"=>"Evergreen",
+//                          "FAIRWAY"=>"Fairway",
+//                          "GLEN HILLS"=>"Glen Hills",
+//                          "GRAND"=>"Grand",
+//                          "GREENWICH"=>"Greenwich",
+//                          "HAVERHILL"=>"Haverhill",
+//                          "HELEN"=>"Helen",
+//                          "IMERA"=>"Imera",
+//                          "KNOLLWOOD"=>"Knollwood",
+//                          "LANCELOTTA"=>"Lancelotta",
+//                          "LILLIAN"=>"Lillian",
+//                          "MARIE"=>"Marie",
+//                          "NATICK"=>"Natick",
+//                          "OAKLAND"=>"Oakland",
+//                          "OFFICE"=>"Office",
+//                          "REDDINGTON"=>"Reddington",
+//                          "SHERWOOD"=>"Sherwood",
+//                          "TARTAGLIA"=>"Tartaglia",
+//                          "THISTLE"=>"Thistle",
+//                          "WHITING"=>"Whiting");
 
 $all_categories = array( "catsel" => "Select a category",
                          1 => "Miscellaneous",
@@ -96,6 +100,7 @@ $all_categories = array( "catsel" => "Select a category",
 
 // Instantiate the parameter selection form for use on this page
 $mform = new staff_select_form( null, array( 'categorylist'=>$all_categories ));
+
 } elseif ( $cat != 'catsel' )
   {
   
