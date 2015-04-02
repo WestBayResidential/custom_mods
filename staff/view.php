@@ -42,13 +42,10 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_title(format_string('Staff Enrollment'));
 $PAGE->set_heading(format_string('Set up employee enrollments'));
 
-$dt_css_url = new moodle_url( 'http://cdn.datatables.net/1.10.5/css/jquery.dataTables.css');
-$dt_js_url = new moodle_url( 'http://code.jquery.com/jquery-1.10.2.min.js' );
-$dt_dt_url = new moodle_url( 'http://cdn.datatables.net/1.10.5/js/jquery.dataTables.js' );
-$PAGE->requires->css( $dt_css_url );
-$PAGE->requires->js( $dt_js_url );
-$PAGE->requires->js( $dt_dt_url );
-$PAGE->requires->js( '/enrol/staff/js/stafftab.js' );
+$PAGE->requires->jquery();
+$PAGE->requires->jquery_plugin( 'staff-jquerymodule' );
+$PAGE->requires->jquery_plugin( 'staff-jquerymodule-css' );
+//$PAGE->requires->js( '/enrol/staff/js/stafftab.js' );
 
 //add_to_log($course->id, 'staff', 'view', "view.php?id={$cm->id}", $staff->name, $cm->id);
 if( $id )

@@ -23,6 +23,8 @@ class staff_edit_form extends moodleform
     $mform->addElement( "html", "<div class=\"container\">" );
     $mform->addElement( "html", $tablestruct );
 
+    $mform->addElement( "html", "<script> $('#enroltable').DataTable({\"scrollY\":200, \"scrollX\":true});</script>");
+
     $mform->addElement("submit", "submitbutton", "Enroll");
 
   }
