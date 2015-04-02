@@ -44,7 +44,7 @@ $PAGE->set_url('/enrol/staff/view.php');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(format_string('Staff Enrollment'));
 $PAGE->set_heading(format_string('Set up employee enrollments'));
-$PAGE->requires->css( 'http://cdn.datatables.net/1.10.5/css/jquery.dataTables.css' );
+$PAGE->requires->css( '//cdn.datatables.net/1.10.5/css/jquery.dataTables.css' );
 $PAGE->requires->js( 'http://code.jquery.com/jquery-1.10.2.min.js' )->in_head();
 $PAGE->requires->js( 'http://cdn.datatables.net/1.10.5/js/jquery.dataTables.js' )->in_head();
 $PAGE->requires->js( 'enrol/staff/js/stafftab.js' )->in_head();
