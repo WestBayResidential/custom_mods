@@ -35,19 +35,20 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/enrol/staff/checktable.php');
 $id = optional_param('id', 0, PARAM_INT); // course_module ID
 $cat = optional_param('cat', 'catsel', PARAM_TEXT);  // course category id
 
-// Confirm that user is logged in and set the page context
-//require_login();
-// 
 // Set up the page here
 // 
 $PAGE->set_url('/enrol/staff/view.php');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(format_string('Staff Enrollment'));
 $PAGE->set_heading(format_string('Set up employee enrollments'));
-$PAGE->requires->css( '//cdn.datatables.net/1.10.5/css/jquery.dataTables.css' );
-$PAGE->requires->js( '//code.jquery.com/jquery-1.10.2.min.js' )->in_head();
-$PAGE->requires->js( '//cdn.datatables.net/1.10.5/js/jquery.dataTables.js' )->in_head();
-$PAGE->requires->js( 'enrol/staff/js/stafftab.js' )->in_head();
+
+$dt_css_url = new moodle_url( 'http://cdn.datatables.net/1.10.5/css/jquery.dataTables.css');
+$dt_js_url = new moodle_url( 'http://code.jquery.com/jquery-1.10.2.min.js' );
+$dt_dt_url = new moodle_url( 'http://cdn.datatables.net/1.10.5/js/jquery.dataTables.js' );
+$PAGE->requires->css( $dt_css_url );
+$PAGE->requires->js( $dt_js_url );
+$PAGE->requires->js( $dt_dt_url );
+$PAGE->requires->js( '/enrol/staff/js/stafftab.js' );
 
 //add_to_log($course->id, 'staff', 'view', "view.php?id={$cm->id}", $staff->name, $cm->id);
 if( $id )

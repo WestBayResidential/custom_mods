@@ -1,3 +1,6 @@
 $( document ).ready( function () {
-  $( '#enroltable' ).DataTable();
+  $( '#enroltable' ).DataTable( {
+    "scrollY": 200,
+    "scrollX": true
+  });
 } );
