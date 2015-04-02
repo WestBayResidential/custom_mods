@@ -11,7 +11,7 @@
 
 function build_checktable($courselist, $namelist)
 {
-  $checktable = '<table class="draggable"><thead><tr>';
+  $checktable = '<table id="enroltable" class="draggable"><thead><tr>';
   // Print header row with residence name and course designations
   $checktable .= '<th>Employee</th>';
 
