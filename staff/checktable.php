@@ -11,7 +11,7 @@
 
 function build_checktable($courselist, $namelist)
 {
-  $checktable = '<table id="enroltable" class="draggable"><thead><tr>';
+  $checktable = '<table id="enroltable" class="display"><thead><tr>';
   // Print header row with residence name and course designations
   $checktable .= '<th>Employee</th>';
 
@@ -25,7 +25,7 @@ function build_checktable($courselist, $namelist)
     $corder++;
     $cnum = $cnum ? $cnum : "NA";
     $cnumlist[ $corder ] = $cnum;
-    $checktable .= '<th>' . $cname . '<br /><input type="checkbox" name="col_' . $corder . ' onClick="checkAll( this.form )" /></th>';
+    $checktable .= '<th class="dt-head-center">' . $cname . '<br /><input type="checkbox" name="col_' . $corder . ' onClick="checkAll( this.form )" /></th>';
   }
   $checktable .= '</tr></thead><tbody><tr><td>';
   
@@ -33,10 +33,10 @@ function build_checktable($courselist, $namelist)
   $sorder = 0;
   foreach( $namelist as $empuser )
   {
-    $checktable .= '<tr><td> ' . $empuser->lastname . ', ' . $empuser->firstname . '</td>';
+    $checktable .= '<tr><td class="dt-head-right"> ' . $empuser->lastname . ', ' . $empuser->firstname . '</td>';
     foreach( $cnumlist as $coursenumb )
     {
-      $checktable .= '<td><input type="checkbox" name="select[' . $coursenumb . '-' . $sorder . ']" value="' . $empuser->id . '" /></td>';
+      $checktable .= '<td class="dt-body-center"><input type="checkbox" name="select[' . $coursenumb . '-' . $sorder . ']" value="' . $empuser->id . '" /></td>';
       ++$sorder;
     }
     $checktable .= '</tr>';
