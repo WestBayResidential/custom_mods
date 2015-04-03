@@ -879,8 +879,8 @@ cursor:pointer;}
 /* Important styles supporting horizontal scrolling */
 
 .container {
-  height: 450px;
-  width: 900px;
+  height: 100%;
+  width: 100%;
 }
  
 table {
