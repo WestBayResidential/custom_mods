@@ -876,36 +876,6 @@ cursor:pointer;}
  { background-color:#666666; width:65px; color:#FFFFFF; padding:0px; height:23px; font-family:"Times New Roman"; font-weight:bold;}
 
 
-/* Important styles supporting horizontal scrolling */
-
-.container {
-  height: 100%;
-  width: 100%;
-}
- 
-table {
-    border-spacing: 0;
-}
-td, th {
-   border-style: solid;
-   border-color: gray;
-   border-width: 1px 1px 0 0;
-}
-th:first-child {
-   border-left-width: 1px;
-}
-tr:last-child td,
-tr:last-child th {
-   border-bottom-width: 1px;
-}
-
-/* Unimportant styles */
-
-td, th {
-   padding: 5px;
-}
-
-
 /* Dynamic Theme Specific settings for Administrators to customise css.
 ---------------------------*/
 [[setting:customcss]]
