@@ -43,8 +43,8 @@ $PAGE->set_title(format_string('Staff Enrollment'));
 $PAGE->set_heading(format_string('Set up employee enrollments'));
 
 $PAGE->requires->jquery();
-$PAGE->requires->jquery_plugin( 'staff-jquerymodule', 'enrol_staff' );
-$PAGE->requires->jquery_plugin( 'staff-jquerymodule-css', 'enrol_staff' );
+$PAGE->requires->jquery_plugin( 'staff-datatable', 'enrol_staff' );
+$PAGE->requires->jquery_plugin( 'staff-datatable-css', 'enrol_staff' );
 
 //add_to_log($course->id, 'staff', 'view', "view.php?id={$cm->id}", $staff->name, $cm->id);
 if( $id )
