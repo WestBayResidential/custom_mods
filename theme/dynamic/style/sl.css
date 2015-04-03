@@ -879,8 +879,8 @@ cursor:pointer;}
 /* Important styles supporting horizontal scrolling */
 
 .container {
-  height: 300px;
-  width: 900px;
+  height: 600px;
+  width: 1000px;
 }
  
 table {
@@ -888,7 +888,7 @@ table {
 }
 td, th {
    border-style: solid;
-   border-color: black;
+   border-color: gray;
    border-width: 1px 1px 0 0;
 }
 th:first-child {
@@ -901,9 +901,6 @@ tr:last-child th {
 
 /* Unimportant styles */
 
-.horiz_container {
-    width: 900px;
-}
 td, th {
    padding: 5px;
 }
