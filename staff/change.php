@@ -27,9 +27,21 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/staff/staff_completion_f
 
 global $CFG, $DATA, $PAGE, $OUTPUT;
 
-//Retrieve the array of staff selected for enrollment
-$select     = required_param_array('select', PARAM_INT); 
+// $PAGE setup stuff
+$PAGE->set_url('/enrol/staff/change.php');
+$PAGE->set_title(format_string('Staff Enrollment'));
+$PAGE->set_heading(format_string('Confirmation of enrollments'));
 $context = context_system::instance();
+
+$mform = new staff_completion_form( null, array( 'staffenrolled'=>$staffenrolled ));
+
+if( $mform->is_cancelled() )
+{
+  redirect( $CFG->wwwroot );
+}
+
+//Retrieve the array of staff selected for enrollment
+$select = required_param_array('select', PARAM_INT); 
 
 // From this request, extract the lists of targeted courses and staff for the enrollment action
 // Isolate and sort the keys from the checktable where the enrollment choices
@@ -45,20 +57,20 @@ $uids_list = array();
 foreach($courses_target as $cid_targ)
 {
   // The first half of the retrieved key is the course_id
-  $cid = explode( "-", $cid_targ );
   // and use course ids as a key if its not already there
+  $cid = explode( "-", $cid_targ );
   if( array_key_exists( $cid[0], $cids_list ))
   {
     // Pick up the user id and add it to the list
-    $uids_list[] = $select[ $cid_targ ];
     // and attach list of users to the course id key
+    $uids_list[] = $select[ $cid_targ ];
     $cids_list[ $cid[0] ] = $uids_list;
   } else 
     {
       // If the course id not already there start a new list of user ids
+      // and attach that list of users to the course id key
       $uids_list = array();
       $uids_list[] = $select[ $cid_targ ];
-      // and attach that list of users to the course id key
       $cids_list[ $cid[0] ] = $uids_list;
     }
 }
@@ -66,15 +78,14 @@ foreach($courses_target as $cid_targ)
 $staff_enroller = new enrol_staff_plugin();
 
 // With lists for the courseids and userids that need to be enrolled in them,
-
 // Prepare the confirmation list for display
 $staffenrolled = "<ul>"; 
 
 foreach( $cids_list as $enr_course=>$enr_users )
 {
-  // Get the course object
+  // Get the course object, then similar to flatfile enrollment, ie. 
+  // if there's no enrol record, add one and then retrieve it
   $enr_course_obj = $DB->get_record( 'course', array( 'id'=>$enr_course ));
-  // Similar to flatfile enrollment, ie. if there's no enrol record, add one then retrieve it
   $enr_instance = $DB->get_record( 'enrol', array( 'courseid'=>$enr_course, 'enrol' => 'staff' ) );
   if( empty($enr_instance))
   {
@@ -85,6 +96,7 @@ foreach( $cids_list as $enr_course=>$enr_users )
     $enr_instance = $DB->get_record( 'enrol', array( 'id' => $enroll_id ));
   }
 
+  // Make a list of successful enrollments for display to the user
   foreach( $enr_users as $usr )
   {
     if( !$staff_enroller->enrol_user( $enr_instance, $usr, "5" ))  
@@ -99,12 +111,6 @@ foreach( $cids_list as $enr_course=>$enr_users )
 // Close off the confirmation list for display
 $staffenrolled .= "</ul>";
 
-
-
-$mform = new staff_completion_form( null, array( 'staffenrolled'=>$staffenrolled ));
-$PAGE->set_url('/enrol/staff/view.php?id=1');
-$PAGE->set_title(format_string('Staff Enrollment'));
-$PAGE->set_heading(format_string('Confirmation of enrollments'));
 
 // Output starts here
 echo $OUTPUT->header();
