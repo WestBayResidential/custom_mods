@@ -37,7 +37,7 @@ $cat = optional_param('cat', 'catsel', PARAM_TEXT);  // course category id
 
 // Set up the page here
 // 
-$PAGE->set_url('/enrol/staff/view.php');
+$PAGE->set_url('/enrol/staff/view.php?id=1');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(format_string('Staff Enrollment'));
 $PAGE->set_heading(format_string('Set up employee enrollments'));
