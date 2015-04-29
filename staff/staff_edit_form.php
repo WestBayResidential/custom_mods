@@ -16,15 +16,20 @@ class staff_edit_form extends moodleform
 
     $mform->MoodleQuickForm("enrol_staff_form", "POST", "change.php");
 
-    $tablestruct = $this->_customdata['coursetable'];
+    $selectionmatrix = $this->_customdata['coursetable'];
 
     //--------------------------------------------------------------
 
-    $mform->addElement( "html", "<div class=\"container\">" );
-    $mform->addElement( "html", $tablestruct );
+    $mform->addElement( "html", "<div>" );
+    $mform->addElement( "html", $selectionmatrix );
 
+    // The scrollY setting in the DataTable plugin below sets the height
+    // of the viewport for the selection table for specifying multiple 
+    // enrolments.
     $mform->addElement( "html", "<script type=\"text/javascript\"> $(document).ready( function(){
-    $('#enroltable').DataTable({\"scrollY\":\"200\", \"scrollX\":true, \"scrollCollapse\":true});}); </script>");
+      $('#enroltable').DataTable({\"scrollY\":\"500\", \"scrollX\":true, \"scrollCollapse\":true});}); </script>");
+
+    //--------------------------------------------------------------
 
     $mform->addElement("submit", "submitbutton", "Enroll");
 

@@ -1,6 +1,6 @@
 <?php
 
-// Build the checklist table HTML for use in the bulkenroll_edit_form
+// Build the checkbox table HTML to display in the staff_edit_form
 //
 // @param array $courselist   Array of courses objects from a select category
 // @param integer $coursecount  Number of courses in the selected category
@@ -16,7 +16,8 @@ function build_checktable($courselist, $namelist)
   $checktable .= '<th>Employee</th>';
 
   // Make a column heading for each course and include a 'select all' checkbox,
-  // and set up an array of the course numbers for use later to create the input checkbox value
+  // in the heading cell. Then set up an array of the course numbers for use 
+  // later on to create the input checkbox value
   $corder = 0;
   $cnumlist = array();
 
@@ -27,7 +28,7 @@ function build_checktable($courselist, $namelist)
     $cnumlist[ $corder ] = $cnum;
     $checktable .= '<th class="dt-head-center">' . $cname . '<br /><input type="checkbox" name="col_' . $corder . ' onClick="checkAll( this.form )" /></th>';
   }
-  $checktable .= '</tr></thead><tbody><tr><td>';
+  $checktable .= '</tr></thead><tbody>';
   
   // Add a row of uniquely identifiable checkboxes for each employee for each course in the list
   $sorder = 0;
@@ -43,7 +44,7 @@ function build_checktable($courselist, $namelist)
   }
   $checktable .= '</tbody></table>';
 
-  // xdebug_break();
+  //xdebug_break();
 
   return $checktable;
 
