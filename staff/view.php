@@ -46,44 +46,6 @@ $PAGE->requires->jquery();
 $PAGE->requires->jquery_plugin( 'staff-datatable', 'enrol_staff' );
 $PAGE->requires->jquery_plugin( 'staff-datatable-css', 'enrol_staff' );
 
-//add_to_log($course->id, 'staff', 'view', "view.php?id={$cm->id}", $staff->name, $cm->id);
-if( $id )
-{
-
-// Set up the residences list for selection
-// $all_residences = array( "ressel" => "Select a residence",
-//                          "AMANDA"=>"Amanda",
-//                          "APARTMENTS"=>"Apartments",
-//                          "BRACKEN"=>"Bracken",
-//                          "BURDICK"=>"Burdick",
-//                          "CELESTIA"=>"Celestia",
-//                          "CENTRAL"=>"Central",
-//                          "CHURCH"=>"Church",
-//                          "CLAYPOOL"=>"Claypool",
-//                          "DARLENE"=>"Darlene",
-//                          "DAWN"=>"Dawn",
-//                          "DAY PROGRAM"=>"Day Program",
-//                          "EVERGREEN"=>"Evergreen",
-//                          "FAIRWAY"=>"Fairway",
-//                          "GLEN HILLS"=>"Glen Hills",
-//                          "GRAND"=>"Grand",
-//                          "GREENWICH"=>"Greenwich",
-//                          "HAVERHILL"=>"Haverhill",
-//                          "HELEN"=>"Helen",
-//                          "IMERA"=>"Imera",
-//                          "KNOLLWOOD"=>"Knollwood",
-//                          "LANCELOTTA"=>"Lancelotta",
-//                          "LILLIAN"=>"Lillian",
-//                          "MARIE"=>"Marie",
-//                          "NATICK"=>"Natick",
-//                          "OAKLAND"=>"Oakland",
-//                          "OFFICE"=>"Office",
-//                          "REDDINGTON"=>"Reddington",
-//                          "SHERWOOD"=>"Sherwood",
-//                          "TARTAGLIA"=>"Tartaglia",
-//                          "THISTLE"=>"Thistle",
-//                          "WHITING"=>"Whiting");
-
 $all_categories = array( "catsel" => "Select a category",
                          1 => "Miscellaneous",
                          2 => "Introductory",
@@ -97,6 +59,12 @@ $all_categories = array( "catsel" => "Select a category",
 // Instantiate the parameter selection form for use on this page
 $mform = new staff_select_form( null, array( 'categorylist'=>$all_categories ));
 
+//add_to_log($course->id, 'staff', 'view', "view.php?id={$cm->id}", $staff->name, $cm->id);
+if( $mform->is_cancelled() )
+{
+
+  redirect( $CFG->wwwroot );
+  
 } elseif ( $cat != 'catsel' )
   {
   
@@ -124,10 +92,10 @@ $mform = new staff_select_form( null, array( 'categorylist'=>$all_categories ));
 
   $mform = new staff_edit_form( NULL, array( 'coursetable'=>$tablestuff ));
   
-  } else
-    {    
+  } //else
+    //{    
        // Make a selection for both residence and course category
-    }
+    //}
 
 // Output starts here
 echo $OUTPUT->header();
