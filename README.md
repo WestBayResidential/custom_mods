@@ -1,5 +1,6 @@
-Repository: custom_mods
+#Repository: custom_mods
 ===========
+
 
 This repository holds the source code for the customized Moodle plugins or
 modules that have been developed for West Bay Residential Services.
@@ -13,8 +14,18 @@ googleoauth2 | support for single sign on authentication to LMS and other system
 bulkenroll | supports enrolling multiple students in a single admin operation | fedora01
 certificate | plugin generating certificates of completion for courses | fedora01
 getcertificate | event handler monitoring for completed quizzes | fedora01
-recertpol | plugin supporting recertification policy administration | devwblms
-staff | plugin providing bulk enrollment capability for new LMS | devwblms
-dynamic | theme for updated LMS in Digital Ocean | devwblms
+recertpol | plugin supporting recertification policy administration | devwblms, dev2wblms
+staff | plugin providing bulk enrollment capability for new LMS | devwblms, dev2wblms
+dynamic | theme for updated LMS in Digital Ocean | devwblms, dev2wblms
 
+##WBLMS Hosts
+There are three hosts referred to in the above table. They are:
+* fedora01 - West Bay data center, intranet access only in the office
+* devwblms - a Digital Ocean droplet, used for development purposes only
+* dev2wblms - a Digital Ocean droplet, supporting the production instance of
+  Moodle v2.5 for continuing staff training
+
+> Refer to the wiki attached to this GitHub repository for more extensive and
+> detailed documentation regarding the West Bay LMS and the customized plugins
+> and modules that are maintained here.
 
