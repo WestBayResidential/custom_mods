@@ -47,13 +47,17 @@ $PAGE->requires->jquery_plugin( 'staff-datatable', 'enrol_staff' );
 $PAGE->requires->jquery_plugin( 'staff-datatable-css', 'enrol_staff' );
 
 $all_categories = array( "catsel" => "Select a category",
-                         1 => "Miscellaneous",
+ //                         1 => "Miscellaneous",
                          2 => "Introductory",
-                         3 => "Day One",
-                         4 => "Within 2 months",
-                         5 => "Within 4 months",
-                         7 => "Annual",
-                         8 => "Biannual"
+                         3 => "Three Day Training",
+ //                         4 => "Within 2 months",
+ //                         5 => "Within 4 months",
+ //                         7 => "Annual",
+ //                         8 => "Biannual",
+ //                         9 => "Within 10 days",
+                         10 => "Within 1 month",
+ //                         11 => "Within 3 months",
+                         12 => "Archive"
                        );
 
 // Instantiate the parameter selection form for use on this page
