@@ -93,6 +93,10 @@ $all_categories = array( "catsel" => "Select a category",
                          5 => "Within 4 months",
                          7 => "Annual",
                          8 => "Biannual"
+                         9 => "Within 10 days"
+                         10 => "Within 1 month"
+                         11 => "Within 3 months"
+                         12 => "Archive"
                        );
 
 // Instantiate the parameter selection form for use on this page
