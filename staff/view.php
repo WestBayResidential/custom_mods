@@ -63,7 +63,6 @@ $all_categories = array( "catsel" => "Select a category",
 // Instantiate the parameter selection form for use on this page
 $mform = new staff_select_form( null, array( 'categorylist'=>$all_categories ));
 
-//add_to_log($course->id, 'staff', 'view', "view.php?id={$cm->id}", $staff->name, $cm->id);
 if( $mform->is_cancelled() )
 {
 

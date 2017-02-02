@@ -31,7 +31,7 @@ class staff_edit_form extends moodleform
 
     //--------------------------------------------------------------
 
-    $mform->addElement("submit", "submitbutton", "Enroll");
+    $this->add_action_buttons( $cancel=true, $submitlabel="Enroll staff");
 
   }
 

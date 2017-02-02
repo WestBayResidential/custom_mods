@@ -27,21 +27,28 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/staff/staff_completion_f
 
 global $CFG, $DATA, $PAGE, $OUTPUT;
 
+// Pick up the returned parameters
+$response_cancel = optional_param('cancel', 'continue', PARAM_TEXT);
+$response_selection = optional_param_array('select', array(0), PARAM_INT);
+
 // $PAGE setup stuff
 $PAGE->set_url('/enrol/staff/change.php');
 $PAGE->set_title(format_string('Staff Enrollment'));
 $PAGE->set_heading(format_string('Confirmation of enrollments'));
-$context = context_system::instance();
+//$context = context_system::instance();
+$PAGE->set_context(context_system::instance());
 
-//$mform = new staff_completion_form( null, array( 'staffenrolled'=>$staffenrolled ));
+xdebug_break();
 
-if( $mform->is_cancelled() )
+if( $response_cancel <> 'continue' )
 {
-  redirect( $CFG->wwwroot );
+ 
+    redirect( $CFG->wwwroot );
+
 } else
-  {
-    //Retrieve the array of staff selected for enrollment
-    $select = required_param_array('select', PARAM_INT); 
+   {
+    //Extract the array of staff selected for enrollment
+    $select = $response_selection;
     
     // From this request, extract the lists of targeted courses and staff for 
     // the enrollment action.
@@ -112,6 +119,7 @@ if( $mform->is_cancelled() )
     // Close off the confirmation list for display
     $staffenrolled .= "</ul>";
   }
+
 $mform = new staff_completion_form( null, array( 'staffenrolled'=>$staffenrolled ));
 
 

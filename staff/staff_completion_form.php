@@ -12,14 +12,16 @@ class staff_completion_form extends moodleform
 
     $mform =& $this->_form;
 
-    //--------------------------------------------------------------
+    $mform->MoodleQuickForm("staff_completion_form", "POST", "finish.php");
 
     $staffenrolledList = $this->_customdata['staffenrolled'];
+
+    //--------------------------------------------------------------
 
     $mform->addElement("html", "<div><p>The following staff members have been enrolled...</p>" );
     $mform->addElement('html', $staffenrolledList);
 
-    $this->add_action_buttons( $cancel=true, $submitlabel='Submit');
+    $this->add_action_buttons( $cancel=false, $submitlabel='Finish');
 
   }
 
