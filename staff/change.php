@@ -32,11 +32,10 @@ $response_cancel = optional_param('cancel', 'continue', PARAM_TEXT);
 $response_selection = optional_param_array('select', array(0), PARAM_INT);
 
 // $PAGE setup stuff
+$PAGE->set_context(context_system::instance());
 $PAGE->set_url('/enrol/staff/change.php');
 $PAGE->set_title(format_string('Staff Enrollment'));
 $PAGE->set_heading(format_string('Confirmation of enrollments'));
-//$context = context_system::instance();
-$PAGE->set_context(context_system::instance());
 
 xdebug_break();
 
