@@ -66,18 +66,21 @@ function lambda_set_pagewidth1($css, $pagewidth) {
 
 function lambda_set_pagewidth2($css, $pagewidth) {
     $tag = '[[setting:pagewidth_wide]]';
-    if ($pagewidth == "100") {
-        $replacement = 'body {background:none repeat scroll 0 0 #fff;padding-top:0;} @media(max-width:767px){body {padding-left: 0; padding-right: 0;} #page {padding: 10px 0;}} #wrapper {max-width:100%;width:100%;} #page-header {margin:0 auto;max-width:90%;} .container-fluid {padding: 0; max-width:100%} .navbar {background: none repeat scroll 0 0 [[setting:menufirstlevelcolor]];padding: 0;} .navbar-inner {margin: 0 auto; max-width: 90%;} .navbar .brand {margin-left:0;} .navbar #search {margin-right:0;} .slidershadow.frontpage-shadow {display:none;} .camera_wrap {margin-top: -10px;} #page-content.row-fluid {margin: 0 auto; max-width: 90%;} #page-footer .row-fluid {margin: 0 auto; max-width: 90%;} .spotlight-full {margin-left: -5.8% !important; margin-right: -5.8% !important;} .socials-header .social_icons.pull-right {padding-right:10%;} .socials-header .social_contact {padding-left:10%;}';
+    if ($pagewidth == "100") 
+    {
+      $replacement = 'body {background:none repeat scroll 0 0 #fff;padding-top:0;} @media(max-width:767px){body {padding-left: 0; padding-right: 0;} #page {padding: 10px 0;}} #wrapper {max-width:100%;width:100%;} #page-header {margin:0 auto;max-width:90%;} .container-fluid {padding: 0; max-width:100%} .navbar {background: none repeat scroll 0 0 [[setting:menufirstlevelcolor]];padding: 0;} .navbar-inner {margin: 0 auto; max-width: 90%;} .navbar .brand {margin-left:0;} .navbar #search {margin-right:0;} .slidershadow.frontpage-shadow {display:none;} .camera_wrap {margin-top: -10px;} #page-content.row-fluid {margin: 0 auto; max-width: 90%;} #page-footer .row-fluid {margin: 0 auto; max-width: 90%;} .spotlight-full {margin-left: -5.8% !important; margin-right: -5.8% !important;} .socials-header .social_icons.pull-right {padding-right:10%;} .socials-header .social_contact {padding-left:10%;}';
+      $css = str_replace($tag, $replacement, $css);
     }
-	$css = str_replace($tag, $replacement, $css);
+    //$css = str_replace($tag, $replacement, $css);
     return $css;
 }
 
 function theme_lambda_set_fontsrc($css) {
-    $tag = '[[setting:fontsrc]]';
-	$themewww = $CFG->wwwroot."/theme";
-    $css = str_replace($tag, $themewww.'/lambda/fonts/', $css);
-    return $css;
+  global $CFG;
+  $tag = '[[setting:fontsrc]]';
+  $themewww = $CFG->wwwroot."/theme";
+  $css = str_replace($tag, $themewww.'/lambda/fonts/', $css);
+  return $css;
 }
 
 function lambda_set_customcss($css, $customcss) {
