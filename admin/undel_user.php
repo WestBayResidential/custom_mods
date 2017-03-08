@@ -1,6 +1,17 @@
-<?php // $Id: undel_user.php,v 2.0.0 2017/03/10 lariv@augurynet.com Exp$
+<?php 
 
-    require_once('../config.php');
+// $Id: undel_user.php,v 2.0.0 2017/03/10 lariv@augurynet.com Exp$
+
+/**
+ * Script to undelete a deleted user, with confirmation.
+ *
+ * @package undelete_user
+ * @copyright Paul LaRiviere (lariv@augurynet.com)
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+
+    require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/config.php');
     require_once($CFG->libdir.'/adminlib.php');
     require_once($CFG->dirroot.'/user/filters/lib.php');
 
@@ -16,8 +27,9 @@
     $acl          = optional_param('acl', '0', PARAM_INT);           // id of user to tweak mnet ACL (requires $access)
 
 
-    admin_externalpage_setup('undeleteusers');
-
+//    admin_externalpage_setup('undeleteusers');
+//    admin_externalpage_print_header();
+    
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
     $site = get_site();
 
@@ -34,7 +46,7 @@
         $securewwwroot = str_replace('http:','https:',$CFG->wwwroot);
     }
 
-    admin_externalpage_print_header();
+
 
     if ($confirmuser and confirm_sesskey()) {
         if (!$user = get_record('user', 'id', $confirmuser)) {
