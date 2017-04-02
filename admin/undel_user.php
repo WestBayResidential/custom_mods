@@ -16,30 +16,39 @@
  */
 
 
-  require_once $_SERVER['DOCUMENT_ROOT'].'/moodle/config.php';
-  require_once $CFG->libdir.'/adminlib.php';
-  require_once $CFG->dirroot.'/user/filters/lib.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/moodle/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/moodle/admin/lib.php';
+require_once $CFG->libdir.'/adminlib.php';
+require_once $CFG->dirroot.'/user/filters/lib.php';
 
-  $undelete    = optional_param('undelete', 0, PARAM_INT);
-  $confirm     = optional_param('confirm', '', PARAM_ALPHANUM);   //md5 hash
-  $confirmuser = optional_param('confirmuser', 0, PARAM_INT);
-  $sort        = optional_param('sort', 'name', PARAM_ALPHA);
-  $dir         = optional_param('dir', 'ASC', PARAM_ALPHA);
-  $page        = optional_param('page', 0, PARAM_INT);
-  $perpage     = optional_param('perpage', 30, PARAM_INT);        // page lines
-  $ru          = optional_param('ru', '2', PARAM_INT);            // remote users
-  $lu          = optional_param('lu', '2', PARAM_INT);            // local users
+$undelete    = optional_param('undelete', 0, PARAM_INT);
+$confirm     = optional_param('confirm', '', PARAM_ALPHANUM);   //md5 hash
+$confirmuser = optional_param('confirmuser', 0, PARAM_INT);
+$sort        = optional_param('sort', 'name', PARAM_ALPHA);
+$dir         = optional_param('dir', 'ASC', PARAM_ALPHA);
+$page        = optional_param('page', 0, PARAM_INT);
+$perpage     = optional_param('perpage', 30, PARAM_INT);        // page lines
+$ru          = optional_param('ru', '2', PARAM_INT);            // remote users
+$lu          = optional_param('lu', '2', PARAM_INT);            // local users
 
-  $acl         = optional_param('acl', '0', PARAM_INT); // userid to tweak mnet
+$acl         = optional_param('acl', '0', PARAM_INT); // userid to tweak mnet
                                                         // ACL (requires $access)
 
 
-  $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-  $site = get_site();
+// Confirm that user is logged in and set the page context
+require_login();
+$sitecontext = context_system::instance();
+// 
+// Set up the page here
+// 
+$PAGE->set_url('/mod/admin/undelete_user.php');
+$PAGE->set_title(format_string('Undelete Users'));
+$PAGE->set_heading(format_string('Select user records to restore...'));
+$PAGE->set_context($sitecontext);
 
 if (!has_capability('moodle/user:update', $sitecontext) 
-    and !has_capability('moodle/user:delete', $sitecontext)
-) {
+    and !has_capability('moodle/user:delete', $sitecontext)) 
+{
     error('You do not have the required permission to edit/delete/undelete users.');
 }
 
@@ -51,6 +60,9 @@ if (empty($CFG->loginhttps)) {
 } else {
     $securewwwroot = str_replace('http:', 'https:', $CFG->wwwroot);
 }
+
+xdebug_break();
+
 
 
 
@@ -72,8 +84,9 @@ if ($confirmuser and confirm_sesskey()) {
         notify(get_string('usernotconfirmed', '', fullname($user, true)));
     }
     // else undelete a selected user, after confirmation
-} else if ($undelete and confirm_sesskey()) {   
-
+//} else if ($undelete and confirm_sesskey()) {   
+} else if ($undelete) {   
+    
     if (!has_capability('moodle/user:delete', $sitecontext)) {
           error('You do not have the required permission to undelete a user.');
     }
