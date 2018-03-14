@@ -47,6 +47,7 @@ $PAGE->requires->jquery_plugin( 'staff-datatable', 'enrol_staff' );
 $PAGE->requires->jquery_plugin( 'staff-datatable-css', 'enrol_staff' );
 $PAGE->requires->jquery_plugin( 'staff-datatable-checkboxes', 'enrol_staff' );
 $PAGE->requires->jquery_plugin( 'staff-datatable-checkboxes-css', 'enrol_staff' );
+$PAGE->requires->js( '/js/enroll_dt.js' );
 
 $all_categories = array( "catsel" => "Select a category",
  //                         1 => "Miscellaneous",
