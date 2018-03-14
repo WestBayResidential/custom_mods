@@ -27,7 +27,7 @@ class staff_edit_form extends moodleform
     // of the viewport for the selection table for specifying multiple 
     // enrolments.
     $mform->addElement( "html", "<script type=\"text/javascript\"> $(document).ready( function(){
-        var table = $('#enroltable').DataTable({\"scrollY\":\"500\", \"scrollX\":true, \"scrollCollapse\":true,\"columnDefs\":[{\"targets\":0,\"checkboxes\":{\"selectRow\":false}}],\"select\":{\"style\":\"multi\"},\"order\":[[1,\"asc\"]]}); }); </script>");
+        var table = $('#enroltable').DataTable({\"scrollY\":\"500\", \"scrollX\":true, \"scrollCollapse\":true,\"columnDefs\":[{\"targets\":\"th-checkit\",\"checkboxes\":{\"selectRow\":false}}]}); }); </script>");
 
     //--------------------------------------------------------------
 
