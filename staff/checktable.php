@@ -27,7 +27,7 @@ function build_checktable($courselist, $namelist)
     $cnum = $cnum ? $cnum : "NA";
     $cnumlist[ $corder ] = $cnum;
     $checktable .= "<th class=\"dt-head-center\"> {$cname} <br />";
-    $checktable .= "<input type=\"checkbox\" name=\"col_{$corder}\" \"class\"=\"th-checkit\" /></th>";
+    $checktable .= "<input type=\"checkbox\" name=\"col_{$corder}\" /></th>";
   }
   $checktable .= '</tr></thead><tbody>';
   
