@@ -17,7 +17,11 @@ $(document).ready( function(){
     });
 });
 
-function get_column(column_order){
-    return column_order;
+function get_column(course_num, column_order){
+    var enrolltbl = $('#enroltable').DataTable();
+
+    var col_checks = enrolltbl.column(`${course_num}.${column_order}`).data();
+
+    return col_checks;
 }
 
