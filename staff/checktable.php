@@ -40,7 +40,7 @@ function build_checktable($courselist, $namelist)
     $checktable .= '<tr><td class="dt-head-right"> ' . $empuser->lastname . ', ' . $empuser->firstname . '</td>';
     foreach( $cnumlist as $coursenumb )
     {
-      $checktable .= '<td class="dt-body-center"><input type="checkbox" name="select[' . $coursenumb . '-' . $sorder . ']" value="' . $empuser->id . '" /></td>';
+      $checktable .= '<td class="dt-body-center"><input type="checkbox" name="select[' . $coursenumb . '.' . $sorder . ']" value="' . $empuser->id . '" /></td>';
       ++$sorder;
     }
     $checktable .= '</tr>';
