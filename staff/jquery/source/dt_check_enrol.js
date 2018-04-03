@@ -22,7 +22,7 @@ function get_column(course_num, column_order){
 
     var col_checks = enrolltbl.column(`${course_num}-${column_order}:name`).nodes();
     // Check or uncheck all cells in the column
-    :
+    
 
     return col_checks;
 }
