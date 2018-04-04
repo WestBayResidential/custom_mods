@@ -26,6 +26,6 @@ function get_column(course_num, column_order){
 
     
 
-    return col_checks_idx;
+    return;
 }
 
