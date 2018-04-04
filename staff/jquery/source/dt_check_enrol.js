@@ -20,7 +20,7 @@ $(document).ready( function(){
 function get_column(course_num, column_order){
     var enrolltbl = $('#enroltable').DataTable();
 
-    var col_checks_idx = enrolltbl.column().index();
+    var col_checks_idx = enrolltbl.column( $column_order ).index('visible');
     // Check or uncheck all cells in the column
     
 
