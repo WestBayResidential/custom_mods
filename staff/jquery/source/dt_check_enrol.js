@@ -22,7 +22,7 @@ function get_column(course_num, column_order){
 
     var col_nodes = enrolltbl.column( column_order ).nodes();
     // Check or uncheck all cells in the column
-    $('input[type="checkbox"]', col_nodes).prop('checked', this.checked);
+    $('input[type="checkbox"]', col_nodes).each().prop('checked', "true");
 
     
 
