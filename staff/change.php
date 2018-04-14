@@ -112,8 +112,9 @@ if( $response_cancel <> 'continue' )
           $staffenrolled .= "<li>Enrollment problem for userid $usr in courseid $enr_course</li>";
         } else
         {
-            $staffname = get_user( $usr, 'lastname');
-            $staffenrolled .= "<li>Userid $usr enrolled in courseid $enr_course</li>";
+            $staff = new core_user();
+            $staff->get_user( $usr, 'lastname, firstname');
+            $staffenrolled .= "<li>$staff->lastname is enrolled in courseid $enr_course</li>";
           }
       }
     }
