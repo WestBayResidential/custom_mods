@@ -24,7 +24,7 @@
 require($_SERVER['DOCUMENT_ROOT'] . "/moodle/config.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/staff/lib.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/staff/staff_completion_form.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/lib/classes/user.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/user/externallib.php");
 
 global $CFG, $DATA, $PAGE, $OUTPUT;
 
