@@ -103,6 +103,10 @@ if( $response_cancel <> 'continue' )
         $enroll_id = $staff_enroller->add_instance( $enr_course_obj );
         $enr_instance = $DB->get_record( 'enrol', array( 'id' => $enroll_id ));
       }
+
+      // Get user names matched to user ids
+      $staff_details = new core_user_external();
+      $staff_details->get_users_by_field('id', $enr_users);
     
       // Make a list of successful enrollments for display to the user
       foreach( $enr_users as $usr )
@@ -112,9 +116,7 @@ if( $response_cancel <> 'continue' )
           $staffenrolled .= "<li>Enrollment problem for userid $usr in courseid $enr_course</li>";
         } else
         {
-            $staff = new core_user();
-            $staff->get_user( $usr, '*', MUST_EXIST);
-            $staffenrolled .= "<li>$staff->lastname is enrolled in courseid $enr_course</li>";
+            $staffenrolled .= "<li>Employee $usr is enrolled in courseid $enr_course</li>";
           }
       }
     }
