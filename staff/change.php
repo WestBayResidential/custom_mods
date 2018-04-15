@@ -113,7 +113,7 @@ if( $response_cancel <> 'continue' )
         } else
         {
             $staff = new core_user();
-            $staff->get_user( $usr, 'lastname, firstname');
+            $staff->get_user( $usr, '*', MUST_EXIST);
             $staffenrolled .= "<li>$staff->lastname is enrolled in courseid $enr_course</li>";
           }
       }
