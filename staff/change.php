@@ -117,6 +117,8 @@ if( $response_cancel <> 'continue' )
             $staffer_details = new core_user();
             $staffer_record = $staffer_details->get_user($usr, '*');
             $staffenrolled .= "<li>Employee $staffer_record->firstname $staffer_record->lastname is enrolled in courseid $enr_course</li>";
+            unset( $staffer_record);
+            unset( $staffer_details);
           }
       }
     }
