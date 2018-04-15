@@ -115,7 +115,7 @@ if( $response_cancel <> 'continue' )
         {
             // Get user names matched to user ids
             $staffer_details = new core_user();
-            $staffer_details->get_user($usr, '*');
+            $staffer_record = $staffer_details->get_user($usr, '*');
             $staffenrolled .= "<li>Employee $usr is enrolled in courseid $enr_course</li>";
           }
       }
