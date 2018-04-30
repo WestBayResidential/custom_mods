@@ -24,6 +24,7 @@
 require($_SERVER['DOCUMENT_ROOT'] . "/moodle/config.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/staff/lib.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/staff/staff_completion_form.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/lib/classes/user.php");
 
 global $CFG, $DATA, $PAGE, $OUTPUT;
 
@@ -102,6 +103,7 @@ if( $response_cancel <> 'continue' )
         $enroll_id = $staff_enroller->add_instance( $enr_course_obj );
         $enr_instance = $DB->get_record( 'enrol', array( 'id' => $enroll_id ));
       }
+
     
       // Make a list of successful enrollments for display to the user
       foreach( $enr_users as $usr )
@@ -110,8 +112,13 @@ if( $response_cancel <> 'continue' )
         {
           $staffenrolled .= "<li>Enrollment problem for userid $usr in courseid $enr_course</li>";
         } else
-          {
-            $staffenrolled .= "<li>Userid $usr enrolled in courseid $enr_course</li>";
+        {
+            // Get user names matched to user ids
+            $staffer_details = new core_user();
+            $staffer_record = $staffer_details->get_user($usr, '*');
+            $staffenrolled .= "<li>Employee $staffer_record->firstname $staffer_record->lastname is enrolled in courseid $enr_course</li>";
+            unset( $staffer_record);
+            unset( $staffer_details);
           }
       }
     }

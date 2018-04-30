@@ -6,5 +6,14 @@ $plugins = array(
   ),
   'staff-datatable-css' => array( 
     'files' => array( 'source/dataTables-1.10.5.css')
+  ),
+  'staff-datatable-checkboxes' => array( 
+    'files' => array( 'source/dataTables-checkboxes.js')
+  ),
+  'staff-datatable-checkboxes-css' => array( 
+    'files' => array( 'source/dataTables-checkboxes.css')
+  ),
+  'staff-datatable-checkenrolfx' => array( 
+    'files' => array( 'source/dt_check_enrol.js')
   )
- );
+);

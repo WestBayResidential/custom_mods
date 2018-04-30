@@ -26,14 +26,18 @@ function build_checktable($courselist, $namelist)
     $corder++;
     $cnum = $cnum ? $cnum : "NA";
     $cnumlist[ $corder ] = $cnum;
-    $checktable .= '<th class="dt-head-center">' . $cname . '<br /><input type="checkbox" name="col_' . $corder . ' onClick="checkAll( this.form )" /></th>';
+    $checktable .= "<th class=\"dt-head-center\"> {$cname} <br />";
+    $checktable .= "<input type=\"checkbox\" name=\"col_{$corder}\" class=\"th-checkit\" onclick=\"get_column(";
+    $checktable .= $cnum . ", " . $corder;
+    $checktable .= ")\" /></th>";
   }
   $checktable .= '</tr></thead><tbody>';
   
   // Add a row of uniquely identifiable checkboxes for each employee for each course in the list
-  $sorder = 0;
+  $sorder = 0;  
   foreach( $namelist as $empuser )
   {
+
     $checktable .= '<tr><td class="dt-head-right"> ' . $empuser->lastname . ', ' . $empuser->firstname . '</td>';
     foreach( $cnumlist as $coursenumb )
     {
