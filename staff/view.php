@@ -90,7 +90,8 @@ $sql_res = "SELECT DISTINCT data
             ORDER BY data ASC";
 
 
-$all_residences = $DB->get_records_sql( $sql_res );
+$all_res_objs = $DB->get_records_sql( $sql_res );
+$all_residences = array_keys( $all_res_objs );
 
 
 // Instantiate the parameter selection form for use on this page
