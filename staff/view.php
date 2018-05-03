@@ -82,6 +82,8 @@ $all_categories = array( "catsel" => "Select a category",
                       *
                       *
                       */
+xdebug_break();
+
 $sql_res = "SELECT DISTINCT data
             FROM mdl_user_info_data
             WHERE fieldid=7
