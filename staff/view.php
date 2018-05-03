@@ -34,6 +34,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/enrol/staff/checktable.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID
 $cat = optional_param('cat', 'catsel', PARAM_TEXT);  // course category id
+$res = optional_param('res', 'all', PARAM_TEXT); // selected residence
 
 // Set up the page here
 // 
@@ -61,10 +62,38 @@ $all_categories = array( "catsel" => "Select a category",
                          10 => "Within 1 month",
  //                         11 => "Within 3 months",
                          12 => "Archive"
-                       );
+                     );
+
+
+                     /* From PRL 2018-04-30:
+                      *
+                      * Create a list of established locations, including
+                      * combination location names which can be created and
+                      * attached to individual employees by the site
+                      * administrator.
+                      *
+                      * Use the follow SQL to compile the complete list of
+                      * current locations...
+                      *
+                      * SELECT DISTINCT data 
+                      * FROM mdl_user_info_data
+                      * WHERE fieldid=7
+                      * ORDER BY data ASC;
+                      *
+                      *
+                      */
+$sql_res = "SELECT DISTINCT data
+            FROM mdl_user_info_data
+            WHERE fieldid=7
+            ORDER BY data ASC";
+
+
+$all_residences = $DB->get_records_sql( $sql_res );
+
 
 // Instantiate the parameter selection form for use on this page
-$mform = new staff_select_form( null, array( 'categorylist'=>$all_categories ));
+$mform = new staff_select_form( null, array( 'categorylist'=>$all_categories,
+                                             'residencelist'=>$all_residences));
 
 if( $mform->is_cancelled() )
 {
@@ -80,6 +109,7 @@ if( $mform->is_cancelled() )
           JOIN mdl_user_info_data b ON a.id = b.userid 
           WHERE a.deleted=0
           AND b.fieldid=7
+          AND b.data=\"{$res}\"
           ORDER BY a.lastname";
   $emplRoster = $DB->get_records_sql( $sql );
   $emplCount = count( $emplRoster );

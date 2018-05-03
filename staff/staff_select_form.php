@@ -15,9 +15,12 @@ class staff_select_form extends moodleform
     //--------------------------------------------------------------
 
     $catList = $this->_customdata['categorylist'];
+    $resList = $this->_customdata['residencelist'];
 
     $mform->addElement("html", "<div>" );
     $select = $mform->addElement( "select" , "cat", "Select course category ", $catList );
+    $mform->addElement("html", "<div>" );
+    $select = $mform->addElement( "select" , "res", "Select residence ", $resList );
 
     $this->add_action_buttons( $cancel=true, $submitlabel='Submit');
 
