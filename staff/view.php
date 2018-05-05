@@ -1,7 +1,4 @@
 <?php
-
-// This file is part of Moodle - http://moodle.org/
-//
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,11 +13,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Prints the main page for the staff administrative functions
+ * Staff enrollment processing.
+ * Adapted from flatfile enrollment by Eugene Venter(c)2010
+ * This module prints the main page for the staff administrative functions
  *
  *
- * @package    mod_staff
- * @copyright  2014 Paul LaRiviere (plariv@augurynet.com)
+ * @package    custom_mods_staff
+ * @copyright  2018 Paul LaRiviere (plariv@augurynet.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

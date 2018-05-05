@@ -16,8 +16,8 @@
  * Staff enrollment processing.
  * Adapted from flatfile enrollment by Eugene Venter(c)2010
  *
- * @package    enrol_staff
- * @copyright  2015 Paul LaRiviere (plariv@augurynet.com)
+ * @package    custom_mods_staff
+ * @copyright  2018 Paul LaRiviere (plariv@augurynet.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,4 +28,4 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/staff/staff_completion_f
 global $CFG, $DATA, $PAGE, $OUTPUT;
 
 
-redirect( $CFG->wwwroot );
+redirect( $CFG->wwwroot . '/enrol/staff/view.php' );

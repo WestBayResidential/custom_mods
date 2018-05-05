@@ -17,8 +17,9 @@
 /**
  * Staff enrolments plugin settings and presets.
  *
- * @package    enrol_staff
- * @copyright  2015 Paul LaRiviere (plariv@augurynet.com)
+ * @package    custom_mods_staff
+ * @copyright  2018 Paul LaRiviere (plariv@augurynet.com)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @author     Paul LaRiviere - based on code by Eugene Venter, Petr Skoda and others
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -32,16 +33,11 @@ if ($ADMIN->fulltree) {
     //--- general settings -----------------------------------------------------------------------------------
     $settings->add(new admin_setting_heading('enrol_staff_settings', '', get_string('pluginname_desc', 'enrol_staff')));
 
-    //$settings->add(new admin_setting_configfile('enrol_staff/location', get_string('location', 'enrol_staff'), get_string('location_desc', 'enrol_staff'), ''));
-
     $options = core_text::get_encodings();
+
     $settings->add(new admin_setting_configselect('enrol_staff/encoding', get_string('encoding', 'enrol_staff'), '', 'UTF-8', $options));
 
     $settings->add(new admin_setting_configcheckbox('enrol_staff/mailstudents', get_string('notifyenrolled', 'enrol_staff'), '', 0));
-
-    //$settings->add(new admin_setting_configcheckbox('enrol_staff/mailteachers', get_string('notifyenroller', 'enrol_staff'), '', 0));
-
-    //$settings->add(new admin_setting_configcheckbox('enrol_staff/mailadmins', get_string('notifyadmin', 'enrol_staff'), '', 0));
 
     $options = array(ENROL_EXT_REMOVED_UNENROL        => get_string('extremovedunenrol', 'enrol'),
                      ENROL_EXT_REMOVED_KEEP           => get_string('extremovedkeep', 'enrol'),
