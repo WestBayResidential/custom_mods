@@ -118,7 +118,9 @@ if( $mform->is_cancelled() )
 } elseif ( $cat != 'catsel' )
   {
   // Retrieve the string-name of selected residence, since only
-  // index value is returned by the page
+  // index value is returned by the page, using the array
+  // of residences that has been reformed on the select page submit.
+  $resName = $all_residences[ $res ];
   
   // Get employee roster and count of selected residence
   $sql = "SELECT a.id, a.lastname, a.firstname, b.fieldid, b.data
@@ -126,7 +128,7 @@ if( $mform->is_cancelled() )
           JOIN mdl_user_info_data b ON a.id = b.userid 
           WHERE a.deleted=0
           AND b.fieldid=7
-          AND b.data=\"{$res}\"
+          AND b.data=\"{$resName}\"
           ORDER BY a.lastname";
   $emplRoster = $DB->get_records_sql( $sql );
   $emplCount = count( $emplRoster );
