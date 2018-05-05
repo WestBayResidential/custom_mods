@@ -38,8 +38,6 @@ $PAGE->set_url('/enrol/staff/change.php');
 $PAGE->set_title(format_string('Staff Enrollment'));
 $PAGE->set_heading(format_string('Confirmation of enrollments'));
 
-xdebug_break();
-
 if( $response_cancel <> 'continue' )
 {
  
