@@ -50,6 +50,10 @@ $PAGE->requires->jquery_plugin( 'staff-datatable-checkboxes', 'enrol_staff' );
 $PAGE->requires->jquery_plugin( 'staff-datatable-checkboxes-css', 'enrol_staff' );
 $PAGE->requires->jquery_plugin( 'staff-datatable-checkenrolfx', 'enrol_staff' );
 
+// Note that the following index values correspond to record values in
+// the mdl_course table. User selection returns the index, which is used
+// directly in the course table query below.
+
 $all_categories = array( "catsel" => "Select a category",
  //                         1 => "Miscellaneous",
                          2 => "Introductory",
@@ -84,12 +88,17 @@ $all_categories = array( "catsel" => "Select a category",
                       */
 xdebug_break();
 
+// Build a list of all available residence assignments including
+// custom added multi-location combinations
+
 $sql_res = "SELECT DISTINCT data
             FROM mdl_user_info_data
             WHERE fieldid=7
             ORDER BY data ASC";
 
-
+// This call returns array of objects with residence names as keys
+// so it must be transformed into an indexed array of names for the 
+// select list.
 $all_res_objs = $DB->get_records_sql( $sql_res );
 $all_residences = array_keys( $all_res_objs );
 
@@ -98,13 +107,18 @@ $all_residences = array_keys( $all_res_objs );
 $mform = new staff_select_form( null, array( 'categorylist'=>$all_categories,
                                              'residencelist'=>$all_residences));
 
+
+// On SUBMIT...
 if( $mform->is_cancelled() )
 {
 
   redirect( $CFG->wwwroot );
-  
+
+// Prepare checkbox page from the selected category and residence 
 } elseif ( $cat != 'catsel' )
   {
+  // Retrieve the string-name of selected residence, since only
+  // index value is returned by the page
   
   // Get employee roster and count of selected residence
   $sql = "SELECT a.id, a.lastname, a.firstname, b.fieldid, b.data
