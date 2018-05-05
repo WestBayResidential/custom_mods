@@ -23,12 +23,6 @@ class staff_edit_form extends moodleform
     $mform->addElement( "html", "<div>" );
     $mform->addElement( "html", $selectionmatrix );
 
-    // The scrollY setting in the DataTable plugin below sets the height
-    // of the viewport for the selection table for specifying multiple 
-    // enrolments.
-    //$mform->addElement( "html", "<script type=\"text/javascript\"> $(document).ready( function(){
-     //   var table = $('#enroltable').DataTable({\"scrollY\":\"500\", \"scrollX\":true, \"scrollCollapse\":true,\"columnDefs\":[{\"targets\":\"th-checkit\",\"checkboxes\":{\"selectAll\":true}}]}); }); </script>");
-
     //--------------------------------------------------------------
 
     $this->add_action_buttons( $cancel=true, $submitlabel="Enroll staff");

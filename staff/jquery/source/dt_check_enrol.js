@@ -1,3 +1,4 @@
+// The scrollY setting in the DataTable plugin below sets the height of the viewport for the selection table for specifying multiple enrolments.
 $(document).ready( function(){
     var table = $('#enroltable').DataTable({
         'scrollY':'500',
