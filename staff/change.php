@@ -43,7 +43,7 @@ xdebug_break();
 if( $response_cancel <> 'continue' )
 {
  
-    redirect( $CFG->wwwroot );
+    redirect( $CFG->wwwroot . '/enrol/staff/view.php' );
 
 } else
    {

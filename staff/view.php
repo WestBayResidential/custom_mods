@@ -69,36 +69,24 @@ $all_categories = array( "catsel" => "Select a category",
                      );
 
 
-                     /* From PRL 2018-04-30:
-                      *
-                      * Create a list of established locations, including
-                      * combination location names which can be created and
-                      * attached to individual employees by the site
-                      * administrator.
-                      *
-                      * Use the follow SQL to compile the complete list of
-                      * current locations...
-                      *
-                      * SELECT DISTINCT data 
-                      * FROM mdl_user_info_data
-                      * WHERE fieldid=7
-                      * ORDER BY data ASC;
-                      *
-                      *
-                      */
-xdebug_break();
+/* Added by PRL 2018-04-30:
+ *
+ * Create a list of established locations, including
+ * multi-site residence names which can be created and
+ * attached to individual employees by the site
+ * administrator.
+ */
 
 // Build a list of all available residence assignments including
-// custom added multi-location combinations
+// administrator added custom multi-site names.
 
 $sql_res = "SELECT DISTINCT data
             FROM mdl_user_info_data
             WHERE fieldid=7
             ORDER BY data ASC";
 
-// This call returns array of objects with residence names as keys
-// so it must be transformed into an indexed array of names for the 
-// select list.
+// This call returns array of objects with residence names as keys.
+// Transform it into an indexed array of names for the select list.
 $all_res_objs = $DB->get_records_sql( $sql_res );
 $all_residences = array_keys( $all_res_objs );
 
@@ -108,7 +96,7 @@ $mform = new staff_select_form( null, array( 'categorylist'=>$all_categories,
                                              'residencelist'=>$all_residences));
 
 
-// On SUBMIT...
+// On SUBMIT ...
 if( $mform->is_cancelled() )
 {
 
