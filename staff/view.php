@@ -1,7 +1,4 @@
 <?php
-
-// This file is part of Moodle - http://moodle.org/
-//
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,11 +13,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Prints the main page for the staff administrative functions
+ * Staff enrollment processing.
+ * Adapted from flatfile enrollment by Eugene Venter(c)2010
+ * This module prints the main page for the staff administrative functions
  *
  *
- * @package    mod_staff
- * @copyright  2014 Paul LaRiviere (plariv@augurynet.com)
+ * @package    custom_mods_staff
+ * @copyright  2018 Paul LaRiviere (plariv@augurynet.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -34,6 +33,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/enrol/staff/checktable.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID
 $cat = optional_param('cat', 'catsel', PARAM_TEXT);  // course category id
+$res = optional_param('res', 'all', PARAM_TEXT); // selected residence
 
 // Set up the page here
 // 
@@ -49,6 +49,10 @@ $PAGE->requires->jquery_plugin( 'staff-datatable-checkboxes', 'enrol_staff' );
 $PAGE->requires->jquery_plugin( 'staff-datatable-checkboxes-css', 'enrol_staff' );
 $PAGE->requires->jquery_plugin( 'staff-datatable-checkenrolfx', 'enrol_staff' );
 
+// Note that the following index values correspond to record values in
+// the mdl_course table. User selection returns the index, which is used
+// directly in the course table query below.
+
 $all_categories = array( "catsel" => "Select a category",
  //                         1 => "Miscellaneous",
                          2 => "Introductory",
@@ -61,18 +65,49 @@ $all_categories = array( "catsel" => "Select a category",
                          10 => "Within 1 month",
  //                         11 => "Within 3 months",
                          12 => "Archive"
-                       );
+                     );
+
+
+/* Added by PRL 2018-04-30:
+ *
+ * Create a list of established locations, including
+ * multi-site residence names which can be created and
+ * attached to individual employees by the site
+ * administrator.
+ */
+
+// Build a list of all available residence assignments including
+// administrator added custom multi-site names.
+
+$sql_res = "SELECT DISTINCT data
+            FROM mdl_user_info_data
+            WHERE fieldid=7
+            ORDER BY data ASC";
+
+// This call returns array of objects with residence names as keys.
+// Transform it into an indexed array of names for the select list.
+$all_res_objs = $DB->get_records_sql( $sql_res );
+$all_residences = array_keys( $all_res_objs );
+
 
 // Instantiate the parameter selection form for use on this page
-$mform = new staff_select_form( null, array( 'categorylist'=>$all_categories ));
+$mform = new staff_select_form( null, array( 'categorylist'=>$all_categories,
+                                             'residencelist'=>$all_residences));
 
+
+// On SUBMIT ...
 if( $mform->is_cancelled() )
 {
 
   redirect( $CFG->wwwroot );
-  
+
+// Prepare checkbox page from the selected category and residence 
 } elseif ( $cat != 'catsel' )
   {
+  // Retrieve the string-name of selected residence, since only
+  // index value is returned by the page, using the array
+  // of residences that has been reformed on the select page submit.
+  $resName = $all_residences[ $res ];
   
   // Get employee roster and count of selected residence
   $sql = "SELECT a.id, a.lastname, a.firstname, b.fieldid, b.data
@@ -80,6 +115,7 @@ if( $mform->is_cancelled() )
           JOIN mdl_user_info_data b ON a.id = b.userid 
           WHERE a.deleted=0
           AND b.fieldid=7
+          AND b.data=\"{$resName}\"
           ORDER BY a.lastname";
   $emplRoster = $DB->get_records_sql( $sql );
   $emplCount = count( $emplRoster );
