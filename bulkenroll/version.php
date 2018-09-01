@@ -30,7 +30,13 @@
 defined('MOODLE_INTERNAL') || die();
 
 //$module->version   = 0;               // If version == 0 then module will not be installed
-$module->version   = 2014112100;      // The current module version (Date: YYYYMMDDXX)
-$module->requires  = 2010031900;      // Requires this Moodle version
-$module->cron      = 0;               // Period for cron to check this module (secs)
-$module->component = 'mod_bulkenroll'; // To check on upgrade, that module sits in correct place
+//$module->version   = 2014112100;      // The current module version (Date: YYYYMMDDXX)
+//$module->requires  = 2010031900;      // Requires this Moodle version
+//$module->cron      = 0;               // Period for cron to check this module (secs)
+//$module->component = 'mod_bulkenroll'; // To check on upgrade, that module sits in correct place
+
+$plugin->version   = 2014112100;      // The current module version (Date: YYYYMMDDXX)
+$plugin->requires  = 2010031900;      // Requires this Moodle version
+$plugin->cron      = 0;               // Period for cron to check this module (secs)
+$plugin->component = 'mod_bulkenroll'; // To check on upgrade, that module sits in correct place
+
