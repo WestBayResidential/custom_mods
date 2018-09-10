@@ -57,11 +57,12 @@ $context = context_system::instance();
 // 
 // Set up the page here
 // 
+$PAGE->set_context($context);
 $PAGE->set_url('/mod/recertpol/view.php');
 $PAGE->set_pagelayout( 'frametop' );
 $PAGE->set_title(format_string('Recertification Policies'));
 $PAGE->set_heading(format_string('Promotion policy'));
-$PAGE->set_context($context);
+//$PAGE->set_context($context);
 
 // Get a list of all available courses
 $courseList = get_courses();
