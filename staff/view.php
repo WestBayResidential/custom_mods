@@ -42,12 +42,16 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_title(format_string('Staff Enrollment'));
 $PAGE->set_heading(format_string('Set up employee enrollments'));
 
-$PAGE->requires->jquery();
-$PAGE->requires->jquery_plugin( 'staff-datatable', 'enrol_staff' );
-$PAGE->requires->jquery_plugin( 'staff-datatable-css', 'enrol_staff' );
-$PAGE->requires->jquery_plugin( 'staff-datatable-checkboxes', 'enrol_staff' );
-$PAGE->requires->jquery_plugin( 'staff-datatable-checkboxes-css', 'enrol_staff' );
-$PAGE->requires->jquery_plugin( 'staff-datatable-checkenrolfx', 'enrol_staff' );
+//$PAGE->requires->jquery();
+//$PAGE->requires->jquery_plugin( 'staff-datatable', 'enrol_staff' );
+//$PAGE->requires->jquery_plugin( 'staff-datatable-css', 'enrol_staff' );
+//$PAGE->requires->jquery_plugin( 'staff-datatable-checkboxes', 'enrol_staff' );
+//$PAGE->requires->jquery_plugin( 'staff-datatable-checkboxes-css', 'enrol_staff' );
+//$PAGE->requires->jquery_plugin( 'staff-datatable-checkenrolfx', 'enrol_staff' );
+$PAGE->requires->js_call_amd( 'mod_staff/config', 'initialise' );
+$PAGE->requires->css( '/mod/staff/js/DataTables-1.10.18/css/jquery.dataTables.min.css', true );
+$PAGE->requires->css( '/mod/staff/js/Select-1.2.6/css/select.dataTables.min.css', true );
+$PAGE->requires->css( '/mod/staff/js/jquery-datatables-checkboxes-1.2.11/css/dataTables.checkboxes.css', true );
 
 // Note that the following index values correspond to record values in
 // the mdl_course table. User selection returns the index, which is used
