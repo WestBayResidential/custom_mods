@@ -36,7 +36,7 @@ defined('MOODLE_INTERNAL') || die();
 //$module->cron      = 0;               // Period for cron to check this module (secs)
 //$module->component = 'mod_recertpol'; // To check on upgrade, that module sits in correct place
 
-$plugin->version   = 2014101101;      // Incremented version due to disabling cron directive
+$plugin->version   = 2014101103;      // Incremented version due to disabling cron directive
 //$plugin->version   = 0;      // If version == 0 then module will not be installed
 //$plugin->version   = 2010032200;      // The current module version (Date: YYYYMMDDXX)
 $plugin->requires  = 2010031900;      // Requires this Moodle version
