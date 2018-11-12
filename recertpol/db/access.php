@@ -48,11 +48,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-/***************************** remove these comment marks and modify the code as needed
-
-	'mod/newmodule:addinstance' => array(
+	'mod/recertpol:addinstance' => array(
 			'riskbitmask' => RISK_XSS,
-	
 			'captype' => 'write',
 			'contextlevel' => CONTEXT_COURSE,
 			'archetypes' => array(
@@ -62,7 +59,7 @@ $capabilities = array(
 			'clonepermissionsfrom' => 'moodle/course:manageactivities'
 	),
 
-    'mod/newmodule:view' => array(
+    'mod/recertpol:view' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
@@ -70,11 +67,11 @@ $capabilities = array(
             'student' => CAP_ALLOW,
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
+            'manager' => CAP_ALLOW
         )
     ),
 
-    'mod/newmodule:submit' => array(
+    'mod/recertpol:submit' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
@@ -82,6 +79,5 @@ $capabilities = array(
             'student' => CAP_ALLOW
         )
     ),
-******************************/
 );
 

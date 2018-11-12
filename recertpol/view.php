@@ -26,16 +26,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/config.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
 require_once('lib.php');
 require_once('classes/recertpol.php');
 require_once('recert_form.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
 $n  = optional_param('n', 0, PARAM_INT);  // recertpol instance ID - it should be named as the first character of the module
-$courseCur     = optional_param_array( 'courseCur', '0', PARAM_RAW );
-$courseNextOri = optional_param_array( 'courseNextOri', '0', PARAM_RAW );
-$courseNextUpd = optional_param_array( 'courseNextUpd', '0', PARAM_RAW );
+//$courseCur     = optional_param_array( 'courseCur', '0', PARAM_RAW );
+//$courseNextOri = optional_param_array( 'courseNextOri', '0', PARAM_RAW );
+//$courseNextUpd = optional_param_array( 'courseNextUpd', '0', PARAM_RAW );
+$courseCur     = optional_param_array( 'courseCur', '0', PARAM_TEXT );
+$courseNextOri = optional_param_array( 'courseNextOri', '0', PARAM_TEXT );
+$courseNextUpd = optional_param_array( 'courseNextUpd', '0', PARAM_TEXT );
 
 
 
@@ -68,9 +71,9 @@ $PAGE->set_heading(format_string('Promotion policy'));
 $courseList = get_courses();
 
 // Instantiate the form for use on this page
-$mform = new recertpol_edit_form();
+// $mform = new recertpol_edit_form();
 
-xdebug_break();
+// xdebug_break();
 
 $rcPolicy = new recertpol();
 
