@@ -58,7 +58,7 @@
 // };
 
 
-define(['jquery', 'enrol_staff/datatables.net', 'mod_staff/datatables.net-select'], function ($, dataTables, select) {
+define(['jquery', 'enrol_staff/datatables', 'enrol_staff/select'], function ($, dataTables, select) {
 var wwwroot = M.cfg.wwwroot;
  
     function initManage() {

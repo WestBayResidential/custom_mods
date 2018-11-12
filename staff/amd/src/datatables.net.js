@@ -1,4 +1,4 @@
-define(['enrol_staff/config', 'datatables.net'], function(unused,dataTables) {
+define(['enrol_staff/config', 'datatables'], function(unused,dataTables) {
       return dataTables;
    }
 );
