@@ -25,11 +25,11 @@
 
 global $CFG, $DATA;
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/config.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/enrol/staff/lib.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/enrol/staff/staff_edit_form.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/enrol/staff/staff_select_form.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/moodle/enrol/staff/checktable.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/config.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/enrol/staff/lib.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/enrol/staff/staff_edit_form.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/enrol/staff/staff_select_form.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/enrol/staff/checktable.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID
 $cat = optional_param('cat', 'catsel', PARAM_TEXT);  // course category id

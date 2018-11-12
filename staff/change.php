@@ -21,10 +21,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require($_SERVER['DOCUMENT_ROOT'] . "/moodle/config.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/staff/lib.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/enrol/staff/staff_completion_form.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "/moodle/lib/classes/user.php");
+require($_SERVER['DOCUMENT_ROOT'] . "/config.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/enrol/staff/lib.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/enrol/staff/staff_completion_form.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/classes/user.php");
 
 global $CFG, $DATA, $PAGE, $OUTPUT;
 

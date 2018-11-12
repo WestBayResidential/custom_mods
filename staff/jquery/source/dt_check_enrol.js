@@ -58,7 +58,7 @@
 // };
 
 
-define(['jquery', 'mod_staff/datatables.net', 'mod_staff/datatables.net-select', 'mod_staff/checkboxes'], function ($, dataTables, select, checkboxes) {
+define(['jquery', 'enrol_staff/datatables.net', 'mod_staff/datatables.net-select'], function ($, dataTables, select) {
 var wwwroot = M.cfg.wwwroot;
  
     function initManage() {
