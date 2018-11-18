@@ -61,7 +61,7 @@
 define(['jquery', 'enrol_staff/datatables'], function ($, dataTables) {
 
     var wwwroot = M.cfg.wwwroot;
-    function initManage() {
+    var myTableInit = function initManage() {
 
         var table = $('#enroltable').dataTables({
             'scrollY':'500',
@@ -81,9 +81,12 @@ define(['jquery', 'enrol_staff/datatables'], function ($, dataTables) {
         });
     }
  
-    return {
-        init: function () {
-            initManage();
-        }
-    };
+//    return {
+//        init: function () {
+//            initManage();
+//        }
+//    };
+
+    return myTableInit;
+
 });
