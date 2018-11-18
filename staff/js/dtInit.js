@@ -58,11 +58,10 @@
 // };
 
 
-define(['jquery', 'enrol_staff/datatables', 'enrol_staff/select'], function ($, dataTables, select) {
-var wwwroot = M.cfg.wwwroot;
- 
+define(['jquery', 'enrol_staff/datatables'], function ($, dataTables) {
+
+    var wwwroot = M.cfg.wwwroot;
     function initManage() {
-        //Do your java-script magic here
 
         var table = $('#enroltable').dataTables({
             'scrollY':'500',
@@ -80,8 +79,6 @@ var wwwroot = M.cfg.wwwroot;
                 }
             ]
         });
-
-        
     }
  
     return {
