@@ -22,71 +22,31 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// The scrollY setting in the DataTable plugin below sets the height 
-// of the viewport for the multiple enrolments selection matrix.
-// $(document).ready( function(){
-//     var table = $('#enroltable').DataTable({
-//         'scrollY':'500',
-//         'scrollX':true,
-//         'scrollCollapse':true,
-//         'columnDefs': [
-//             {
-//             'targets':'enr_check',
-//             'searchable':false,
-//             'orderable':false,
-//             'className':'dt-body-center',
-//             'render': function (data, type, full, meta){
-//                 return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
-//                 }
-//             }
-//         ]
-//     });
-// });
-// 
-// function get_column(course_num, column_order){
-//     var enrolltbl = $('#enroltable').DataTable();
-// 
-//     var col_nodes = enrolltbl.column( column_order ).nodes();
-//     // Check or uncheck all cells in the column
-//     $('input[type="checkbox"]', col_nodes).prop('checked', function(i,val){
-//       return !val;
-//     });
-// 
-//     
-// 
-//     return;
-// };
-
 
 define(['jquery', 'enrol_staff/datatables'], function ($, dataTables) {
 
-    var wwwroot = M.cfg.wwwroot;
-    var myTableInit = function initManage() {
-
-        var table = $('#enroltable').dataTables({
-            'scrollY':'500',
-            'scrollX':true,
-            'scrollCollapse':true,
-            'columnDefs': [
-                {
-                'targets':'enr_check',
-                'searchable':false,
-                'orderable':false,
-                'className':'dt-body-center',
-                'render': function (data, type, full, meta){
-                    return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+    return {
+        function initManage() {
+    
+            var table = $('#enroltable').dataTables({
+                'scrollY':'500',
+                'scrollX':true,
+                'scrollCollapse':true,
+                'columnDefs': [
+                    {
+                    'targets':'enr_check',
+                    'searchable':false,
+                    'orderable':false,
+                    'className':'dt-body-center',
+                    'render': function (data, type, full, meta){
+                        return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+                        }
                     }
-                }
-            ]
-        });
+                ]
+            });
+        }
     }
- 
-//    return {
-//        init: function () {
-//            initManage();
-//        }
-//    };
-
-    return myTableInit;
 
 });
+    
+    
