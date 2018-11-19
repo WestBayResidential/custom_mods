@@ -23,28 +23,26 @@
  */
 
 
-define(['jquery', 'enrol_staff/datatables'], function ($, dataTables) {
+define( dtInit, ['jquery', 'enrol_staff/datatables'], function ($, dataTables) {
 
     return {
-        function initManage() {
-    
-            var table = $('#enroltable').dataTables({
-                'scrollY':'500',
-                'scrollX':true,
-                'scrollCollapse':true,
-                'columnDefs': [
-                    {
-                    'targets':'enr_check',
-                    'searchable':false,
-                    'orderable':false,
-                    'className':'dt-body-center',
-                    'render': function (data, type, full, meta){
-                        return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
-                        }
+
+        var table = $('#enroltable').dataTables({
+            'scrollY':'500',
+            'scrollX':true,
+            'scrollCollapse':true,
+            'columnDefs': [
+                {
+                'targets':'enr_check',
+                'searchable':false,
+                'orderable':false,
+                'className':'dt-body-center',
+                'render': function (data, type, full, meta){
+                    return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
                     }
-                ]
-            });
-        }
+                }
+            ]
+        });
     }
 
 });
