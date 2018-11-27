@@ -27,16 +27,20 @@ define(['jquery', 'enrol_staff/datatables'], function ($, dataTable) {
  
     return {
 
-        get_column: function(course_num, column_order){
-            var enrolltbl = $('#enroltable').dataTable().api();
-            var col_nodes = enrolltbl.column( column_order ).nodes();
+//        get_column: function(course_num, column_order){
+//            var enrolltbl = $('#enroltable').dataTable().api();
+//            var col_nodes = enrolltbl.column( column_order ).nodes();
+//
+//            // Check or uncheck all cells in the column
+//            $('input[type="checkbox"]', col_nodes).prop('checked', function(i,val){
+//              return !val;
+//            });
+//            return;
 
-            // Check or uncheck all cells in the column
-            $('input[type="checkbox"]', col_nodes).prop('checked', function(i,val){
-              return !val;
-            });
-            return;
-        }
+        $('#enroltable').on( 'select.dt', function () {
+            alert( 'Cell selected' );
+        });
+    
+    }
 
-    };
 });
