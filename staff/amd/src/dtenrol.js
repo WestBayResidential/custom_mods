@@ -27,8 +27,8 @@ define(['jquery', 'enrol_staff/datatables'], function ($, dataTable) {
  
     return {
 
-        function get_column(course_num, column_order){
-            var enrolltbl = $('#enroltable').dataTables();
+        get_column: function(course_num, column_order){
+            var enrolltbl = $('#enroltable').dataTable();
             var col_nodes = enrolltbl.column( column_order ).nodes();
 
             // Check or uncheck all cells in the column
@@ -36,7 +36,7 @@ define(['jquery', 'enrol_staff/datatables'], function ($, dataTable) {
               return !val;
             });
             return;
-        };
+        }
 
     };
 });
