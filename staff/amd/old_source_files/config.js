@@ -8,7 +8,7 @@ define([], function () {
         shim: {
            //Enter the "names" that will be used to refer to your libraries
            'datatables': {exports: 'dataTables'},
-           'dtinit': {exports: 'myTableInit'}
+           'dtinit': {exports: 'dtInit'}
         }
     });
 });
