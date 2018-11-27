@@ -43,6 +43,7 @@ $PAGE->set_title(format_string('Staff Enrollment'));
 $PAGE->set_heading(format_string('Set up employee enrollments'));
 
 $PAGE->requires->js_call_amd( 'enrol_staff/dtinit', 'init' );
+$PAGE->requires->js_call_amd( 'enrol_staff/dtenrol', 'get_column' );
 $PAGE->requires->css( '/enrol/staff/js/datatables.min.css' );
 $PAGE->requires->css( '/enrol/staff/js/jquery-datatables-checkboxes-1.2.11/css/dataTables.checkboxes.css' );
 
