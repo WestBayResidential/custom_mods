@@ -23,13 +23,13 @@
  */
 
 
-define(['jquery', 'enrol_staff/datatables'], function ($, dataTables) {
+define(['jquery', 'enrol_staff/datatables'], function ($, dataTable) {
 
     return {
 
             init: function() {
 
-            var table = $('#enroltable').dataTables({
+            var table = $('#enroltable').dataTable({
                 'scrollY':'500',
                 'scrollX':true,
                 'scrollCollapse':true,
