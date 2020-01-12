@@ -37,11 +37,11 @@ define(['jquery', 'enrol_staff/datatables'], function ($, dataTable) {
 //            });
 //            return;
 
-        get_column: let enrolltbl = $('#enroltable').dataTable().api();
-        enrolltbl.on( 'select.dt', function () {
-            alert( 'Cell selected' );
-        });
-    
+	    get_column: function() {
+	        var enrolltbl = $('#enroltable').dataTable().api();
+                enrolltbl.on( 'select.dt', function () {
+                    alert( 'Cell selected' );
+                });
+	    }
     }
-
 });
